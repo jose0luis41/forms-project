@@ -1,27 +1,92 @@
 <mat-card>
-  <mat-card-content>
+    <mat-card-content>
 
-    <form [formGroup]="inputForm" (submit)="onSubmit()">
+        <form [formGroup]="inputForm" (submit)="onSubmit()">
 
-      <div formArrayName="inputs" *ngFor="let input of inputForm.controls.inputs.controls; let i = index;">
-        <div formGroupName="{{i}}">
-          {{input.get('name').value}}
-          {{input.get('description').value}}
-          {{input.get('deviceResource').value}}
+            <div formArrayName="inputs" *ngFor="let input of inputForm.controls.inputs.controls; let i = index;">
+                <div formGroupName="{{i}}">
+
+                    <div>
+
+                        <a (click)="showDetails(input)">
+                            <mat-icon md-12 aria-label="Details">keyboard_arrow_down
+                            </mat-icon>
+                        </a>
+                        <mat-form-field class="input-left">
+                            <input type="text" matInput formControlName="name" [(ngModel)]="input.get('name').value" placeholder="Name">
+                        </mat-form-field>
+
+                        <mat-form-field class="input-right">
+                            <input type="text" matInput formControlName="description" [(ngModel)]="input.get('description').value" placeholder="Description">
+                        </mat-form-field>
+
+                        <!--  <button (click)="showDetails()" class="details" type="submit">
+                                
+                        </button> -->
+
+                    </div>
+
+                    <div *ngIf="input.get('showDetails').value">
+                        <div>
+                            <mat-form-field class="input-left">
+                                <mat-select formControlName="deviceResource" placeholder="Device Resource Type" [disabled]="true">
+                                </mat-select>
+                            </mat-form-field>
+
+
+                            <mat-form-field class="input-right">
+                                <input type="text" matInput formControlName="defaultValue" [(ngModel)]="input.get('defaultValue').value" placeholder="Default Value">
+                            </mat-form-field>
+                        </div>
+
+                        <div>
+                            <mat-form-field class="input-left">
+                                <mat-select formControlName="dataType" [(ngModel)]="input.get('dataType').value" placeholder="Data Type">
+                                    <mat-option *ngFor="let dataType of dataTypes" [value]="dataType.name">
+                                        {{dataType.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                            <mat-form-field class="input-left">
+                                <mat-select formControlName="format" [(ngModel)]="input.get('format').value" placeholder="Format">
+                                    <mat-option *ngFor="let format of formats" [value]="format.name">
+                                        {{format.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="mat-divider-class">
+                        <mat-divider></mat-divider>
+                    </div>
+
+
+                    <!-- {{input.get('name').value}} 
+          {{input.get('description').value}} 
+          {{input.get('deviceResource').value}} 
           {{input.get('defaultValue').value}}
-          {{input.get('dataType').value}}
-          {{input.get('format').value}}
+          {{input.get('dataType').value}} 
+          {{input.get('format').value}} 
+          {{input.get('rangeMin').value}}
+          {{input.get('rangeMax').value}}
+          {{input.get('unitMeasure').value}}
+          {{input.get('precision').value}}
+          {{input.get('accuracy').value}} -->
 
-        </div>
-      </div>
+                </div>
+            </div>
 
+            <div class="button-div">
+                <button mat-raised-button color="primary" type="submit">Register</button>
+            </div>
 
-      <div class="button-div">
-        <button mat-raised-button color="primary" type="submit">Register</button>
-      </div>
+        </form>
 
-    </form>
-
-  </mat-card-content>
+    </mat-card-content>
 
 </mat-card>

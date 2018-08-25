@@ -1,0 +1,26 @@
+
+
+/deep/ mat-tab-group{
+    .mat-tab-header{
+        max-width: 800px;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        background: white
+    }
+
+    .mat-tab-header, .mat-tab-nav-bar {
+        border-bottom: 1px solid rgba(0,0,0,.12);
+        border-top: 1px solid rgba(0,0,0,.12);
+        border-left: 1px solid rgba(0,0,0,.12);
+        border-right: 1px solid rgba(0,0,0,.12);
+    
+    }
+
+
+
+    .mat-tab-label {
+        border-left: 1px solid rgba(0,0,0,.12);
+        border-right: 1px solid rgba(0,0,0,.12);
+    }
+}
+
