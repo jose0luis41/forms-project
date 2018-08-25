@@ -9,13 +9,15 @@ import { FormComponent } from './tabs/form/form.component';
 import { MatCardModule } from '@angular/material';
 import {MatDividerModule} from '@angular/material/divider';
 import {ManageDataService} from './services/manage-data.service';
+import { NewInputComponent } from './tabs/form/new-input/new-input.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TabsComponent,
     FormComponent,
-    routingComponents
+    routingComponents,
+    NewInputComponent
   ],
   imports: [
     BrowserModule,

@@ -8,16 +8,19 @@
 
                     <div>
 
-                        <a (click)="showDetails(input)">
-                            <mat-icon md-12 aria-label="Details">keyboard_arrow_down
+
+                        <a (click)="showDetails(input)" class="a-details">
+                            <mat-icon md-12 aria-label="Details">{{input.get('showDetails').value ? 'keyboard_arrow_up':
+                                'keyboard_arrow_down'}}
                             </mat-icon>
                         </a>
                         <mat-form-field class="input-left">
-                            <input type="text" matInput formControlName="name" [(ngModel)]="input.get('name').value" placeholder="Name">
+                            <input type="text" matInput formControlName="name" [(ngModel)]="input.get('name').value" placeholder="Name" readonly>
                         </mat-form-field>
 
                         <mat-form-field class="input-right">
-                            <input type="text" matInput formControlName="description" [(ngModel)]="input.get('description').value" placeholder="Description">
+                            <input type="text" matInput formControlName="description" [(ngModel)]="input.get('description').value" placeholder="Description"
+                                readonly>
                         </mat-form-field>
 
                         <!--  <button (click)="showDetails()" class="details" type="submit">
@@ -28,28 +31,30 @@
 
                     <div *ngIf="input.get('showDetails').value">
                         <div>
-                            <mat-form-field class="input-left">
-                                <mat-select formControlName="deviceResource" placeholder="Device Resource Type" [disabled]="true">
+                            <mat-form-field class="input-left readonly-wrapper">
+                                <mat-select formControlName="deviceResource" placeholder="Device Resource Type" [disabled]="true" class="readonly-block">
                                 </mat-select>
                             </mat-form-field>
 
 
                             <mat-form-field class="input-right">
-                                <input type="text" matInput formControlName="defaultValue" [(ngModel)]="input.get('defaultValue').value" placeholder="Default Value">
+                                <input type="text" matInput formControlName="defaultValue" [(ngModel)]="input.get('defaultValue').value" placeholder="Default Value"
+                                    readonly>
                             </mat-form-field>
                         </div>
 
                         <div>
-                            <mat-form-field class="input-left">
-                                <mat-select formControlName="dataType" [(ngModel)]="input.get('dataType').value" placeholder="Data Type">
+                            <mat-form-field class="input-left readonly-wrapper">
+                                <mat-select formControlName="dataType" [(ngModel)]="input.get('dataType').value" placeholder="Data Type" [disabled]="true"
+                                    class="readonly-block">
                                     <mat-option *ngFor="let dataType of dataTypes" [value]="dataType.name">
                                         {{dataType.name}}
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
 
-                            <mat-form-field class="input-left">
-                                <mat-select formControlName="format" [(ngModel)]="input.get('format').value" placeholder="Format">
+                            <mat-form-field class="input-left readonly-wrapper">
+                                <mat-select formControlName="format" [(ngModel)]="input.get('format').value" placeholder="Format" [disabled]="true" class="readonly-block">
                                     <mat-option *ngFor="let format of formats" [value]="format.name">
                                         {{format.name}}
                                     </mat-option>
@@ -58,35 +63,63 @@
 
                         </div>
 
+                        <div *ngIf="input.get('rangeMin').value">
+                            <mat-form-field class="input-range input-margin">
+                                <input type="text" matInput formControlName="rangeMin" [(ngModel)]="input.get('rangeMin').value" placeholder="Range Min"
+                                    readonly>
+                            </mat-form-field>
+
+                            <mat-form-field class="input-range">
+                                <input type="text" matInput formControlName="rangeMax" [(ngModel)]="input.get('rangeMax').value" placeholder="Range Max"
+                                    readonly>
+                            </mat-form-field>
+
+                        </div>
+
+                        <div *ngIf="input.get('rangeMin').value">
+                                <mat-form-field class="input-range-last-input input-margin-last-input">
+                                    <input type="text" matInput formControlName="unitMeasure" [(ngModel)]="input.get('unitMeasure').value" placeholder="UoM (eg: mm)"
+                                        readonly>
+                                </mat-form-field>
+    
+                                <mat-form-field class="input-range-last-input input-margin-last-input">
+                                    <input type="text" matInput formControlName="precision" [(ngModel)]="input.get('precision').value" placeholder="Precision (eg: 0.5)"
+                                        readonly>
+                                </mat-form-field>
+    
+                                <mat-form-field class="input-range-last-input">
+                                        <input type="text" matInput formControlName="accuracy" [(ngModel)]="input.get('accuracy').value" placeholder="Accuracy (eg: 0.5)"
+                                            readonly>
+                                    </mat-form-field>
+                            </div>
+
                     </div>
 
+                    <a *ngIf="input.get('showDetails').value" (click)="removeInput(input)" class="a-icon-left">
+                        <mat-icon md-12 aria-label="delete">delete</mat-icon>
+                    </a>
 
                     <div class="mat-divider-class">
                         <mat-divider></mat-divider>
                     </div>
 
-
-                    <!-- {{input.get('name').value}} 
-          {{input.get('description').value}} 
-          {{input.get('deviceResource').value}} 
-          {{input.get('defaultValue').value}}
-          {{input.get('dataType').value}} 
-          {{input.get('format').value}} 
-          {{input.get('rangeMin').value}}
-          {{input.get('rangeMax').value}}
-          {{input.get('unitMeasure').value}}
-          {{input.get('precision').value}}
-          {{input.get('accuracy').value}} -->
-
                 </div>
             </div>
-
-            <div class="button-div">
+            <a (click)="addNewInput()" *ngIf="!showNewInputForm" class="a-icon-left">
+                    <mat-icon md-12 aria-label="Details">add_circle
+                    </mat-icon>
+                    <p>Add new attribute</p> 
+            </a>
+           
+          <!--   <div class="button-div">
                 <button mat-raised-button color="primary" type="submit">Register</button>
-            </div>
+            </div> -->
 
         </form>
 
+        <app-new-input *ngIf="showNewInputForm"></app-new-input>
+
+        
     </mat-card-content>
 
 </mat-card>

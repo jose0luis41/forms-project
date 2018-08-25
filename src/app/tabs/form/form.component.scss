@@ -27,23 +27,76 @@ mat-card{
     }
 }
 
+.input-margin{
+    margin-right: 30px;
+}
+
+.input-range{
+    width: 356px;
+
+    @media screen and (max-width: 823px) {
+        width: 100%;
+    }
+}
+
+.input-range-last-input{
+    width: 234px;
+
+    @media screen and (max-width: 823px) {
+        width: 100%;
+    }
+}
+
+.input-margin-last-input{
+    margin-right: 20px;
+
+}
+
 
 .mat-divider-class{
     margin-top: 9px;
     margin-bottom: 28px;
 }
-
+/* 
 .button-div{
     justify-content: flex-end;
     display: flex;
-}
+} */
 
 .details{
     padding: 0;
 }
 
-a{
+.a-details{
+    margin-right: 0;
+    margin-left: auto;
     justify-content: flex-end;
+    display: table;
+}
+
+.a-icon-left{
+    margin-right: auto;
+    margin-left: -2px;
+    //justify-content: flex-end;
+    //display: table; 
+    justify-content: flex-start;
     display: flex;
+}
+
+p{
+    margin: 3px 0 0 0;
+}
+
+
+mat-icon{
     cursor: pointer;
+    font-size: 19px;
+}
+
+.readonly-wrapper {
+    cursor: not-allowed;
+}
+
+.readonly-wrapper .readonly-block {
+    pointer-events: none;
 }

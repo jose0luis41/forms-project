@@ -30,8 +30,8 @@ export class TabsComponent implements OnInit {
   }
 
   tabChanged = (tabChangeEvent: MatTabChangeEvent): void => {
-    console.log(tabChangeEvent.tab.textLabel);
     this.manageData.changeCurrentCategory(tabChangeEvent.tab.textLabel);
+    this.manageData.changeCurrentShowForm(false);
   }
 
 }

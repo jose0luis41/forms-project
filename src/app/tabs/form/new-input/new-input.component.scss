@@ -1,0 +1,62 @@
+.input-left{
+    margin-right: 40px;
+
+    @media screen and (max-width: 823px) {
+        width: 100%;
+    }
+}
+
+.input-enum{
+    margin-right: 40px;
+    width: 330px;
+
+    @media screen and (max-width: 823px) {
+        width: 850%;
+    }
+}
+
+
+.input-right {
+
+    width: 520px;
+
+    @media screen and (max-width: 823px) {
+        width: 100%;
+    }
+}
+
+.input-margin{
+    margin-right: 30px;
+}
+
+.input-range{
+    width: 356px;
+
+    @media screen and (max-width: 823px) {
+        width: 100%;
+    }
+}
+
+.input-range-last-input{
+    width: 234px;
+
+    @media screen and (max-width: 823px) {
+        width: 100%;
+    }
+}
+
+.input-margin-last-input{
+    margin-right: 20px;
+
+}
+
+
+.button-div{
+    justify-content: flex-end;
+    display: flex;
+}
+
+
+.save-button{
+    margin-right: 10px;
+}

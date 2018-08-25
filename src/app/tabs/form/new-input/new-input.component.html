@@ -1,0 +1,84 @@
+<form #myForm="ngForm" [formGroup]="form" (submit)="onSubmit()">
+
+    <h2 mat-dialog-title>New Input</h2>
+
+  <div>
+    <mat-form-field class="input-left">
+      <input type="text" matInput formControlName="nameInput" [(ngModel)]="newInput.name" placeholder="Name">
+    </mat-form-field>
+
+    <mat-form-field class="input-right">
+      <input type="text" matInput formControlName="descriptionInput" [(ngModel)]="newInput.description" placeholder="Description">
+    </mat-form-field>
+
+  </div>
+
+    <div>
+      <mat-form-field class="input-left readonly-wrapper">
+        <mat-select formControlName="deviceInput" placeholder="Device Resource Type" [(ngModel)]="newInput.deviceResource" [disabled]="true" class="readonly-block">
+        </mat-select>
+      </mat-form-field>
+
+
+      <mat-form-field class="input-right">
+        <input type="text" matInput formControlName="defaultValueInput" [(ngModel)]="newInput.defaultValue" [readOnly]="newInput.dataType === 'OBJECT'"  placeholder="Default Value">
+      </mat-form-field>
+    </div>
+
+    <div>
+      <mat-form-field class="input-left readonly-wrapper">
+        <mat-select formControlName="dataTypeInput" [(ngModel)]="newInput.dataType" placeholder="Data Type"
+          class="readonly-block">
+          <mat-option *ngFor="let dataType of dataTypes" [value]="dataType.name">
+            {{dataType.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="input-left readonly-wrapper">
+        <mat-select formControlName="formatInput" [(ngModel)]="newInput.format" [disabled]="newInput.dataType === 'OBJECT'" placeholder="Format" class="readonly-block">
+          <mat-option  *ngFor="let format of formats" (click)="manageValidations(format)" [value]="format.name">
+            {{format.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+    </div>
+
+
+    <mat-form-field class="input-enum" *ngIf="newInput.format !== 'NUMBER'">
+        <input type="text" matInput formControlName="enmuerationInput" [(ngModel)]="newInput.enumerations" placeholder="Enumerations">
+      </mat-form-field>
+
+    <div *ngIf="newInput.format && newInput.format === 'NUMBER'">
+      <mat-form-field class="input-range input-margin">
+        <input type="text" matInput formControlName="rangeMinInput" [(ngModel)]="newInput.rangeMin" placeholder="Range Min">
+      </mat-form-field>
+
+      <mat-form-field class="input-range">
+        <input type="text" matInput formControlName="rangeMaxInput" [(ngModel)]="newInput.rangeMax" placeholder="Range Max">
+      </mat-form-field>
+
+    </div>
+
+    <div *ngIf="newInput.format && newInput.format === 'NUMBER'">
+      <mat-form-field class="input-range-last-input input-margin-last-input">
+        <input type="text" matInput formControlName="unitMeasureInput" [(ngModel)]="newInput.unitMeasure" placeholder="UoM (eg: mm)">
+      </mat-form-field>
+
+      <mat-form-field class="input-range-last-input input-margin-last-input">
+        <input type="text" matInput formControlName="precisionInput" [(ngModel)]="newInput.precision" placeholder="Precision (eg: 0.5)">
+      </mat-form-field>
+
+      <mat-form-field class="input-range-last-input">
+        <input type="text" matInput formControlName="accuracyInput" [(ngModel)]="newInput.accuracy" placeholder="Accuracy (eg: 0.5)">
+      </mat-form-field>
+    </div>
+
+
+  <div class="button-div">
+    <button mat-raised-button color="primary" type="submit" [disabled]="!myForm.form.valid" class="save-button">SAVE</button>
+    <button mat-raised-button (click)="manageFormCancel()">CANCEL</button>
+  </div>
+
+</form>
