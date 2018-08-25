@@ -1,6 +1,6 @@
 import { Component, OnInit, NgModule } from '@angular/core';
 import { MatFormFieldModule, MatInputModule, MatSelectModule, MatSelect, MatFormField, MatInput } from '@angular/material';
-import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
 import { ManageDataService } from '../../../services/manage-data.service';
 
 @Component({
@@ -61,13 +61,14 @@ export class NewInputComponent implements OnInit {
 
   manageValidations(format){
     if(format.name === 'NUMBER'){
-      this.form.controls['rangeMinInput'].setValidators([Validators.required]);
-      this.form.controls['rangeMaxInput'].setValidators([Validators.required]);
+      this.form.controls['rangeMinInput'].setValidators([Validators.required, this.greaterThan('rangeMaxInput')]);
+      this.form.controls['rangeMaxInput'].setValidators([Validators.required, , this.lessThan('rangeMinInput')]);
       this.form.controls['precisionInput'].setValidators([Validators.required]);
 
       this.form.controls['rangeMinInput'].updateValueAndValidity();
       this.form.controls['rangeMaxInput'].updateValueAndValidity();
       this.form.controls['precisionInput'].updateValueAndValidity();
+
 
 
     }else{
@@ -91,5 +92,27 @@ export class NewInputComponent implements OnInit {
   manageFormCancel(){
     this.manageData.changeCurrentShowForm(false);
   }
+
+  greaterThan(field: string): ValidatorFn {
+    return (control: AbstractControl): {[key: string]: any} => {
+      const group = control.parent;
+      const fieldToCompare = group.get('rangeMaxInput');
+      const isLessThan = Number(fieldToCompare.value) < Number(control.value);
+      return isLessThan ? {'lessThan': {value: control.value}} : null;
+    }
+  }
+
+  lessThan(field: string): ValidatorFn {
+    return (control: AbstractControl): {[key: string]: any} => {
+      const group = control.parent;
+      const fieldToCompare = group.get('rangeMinInput');
+      const isGreaterThan = Number(fieldToCompare.value) > Number(control.value);
+      return isGreaterThan ? {'greaterThan': {value: control.value}} : null;
+    }
+  }
+
+    
+
+
 
 }
