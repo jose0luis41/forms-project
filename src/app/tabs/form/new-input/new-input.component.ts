@@ -33,6 +33,7 @@ export class NewInputComponent implements OnInit {
   form: FormGroup;
   submitted = false;
   newInput = {};
+  showEnum = true;
 
   public dataTypes = [{ 'name': 'STRING' }, { 'name': 'OBJECT' }];
   public formats = [{ 'name': 'NONE' }, { 'name': 'NUMBER' }, { 'name': 'BOOLEAN' }, { 'name': 'DATE-TIME' }, { 'name': 'CDATA' }, { 'name': 'URL' }];
@@ -56,11 +57,13 @@ export class NewInputComponent implements OnInit {
       'accuracyInput': ['',],
 
     });
-    
+
   }
 
-  manageValidations(format){
-    if(format.name === 'NUMBER'){
+  manageValidations(format) {
+    if (format.name === 'NUMBER') {
+      this.showEnum = false;
+
       this.form.controls['rangeMinInput'].setValidators([Validators.required, this.greaterThan('rangeMaxInput')]);
       this.form.controls['rangeMaxInput'].setValidators([Validators.required, , this.lessThan('rangeMinInput')]);
       this.form.controls['precisionInput'].setValidators([Validators.required]);
@@ -71,7 +74,7 @@ export class NewInputComponent implements OnInit {
 
 
 
-    }else{
+    } else {
       this.form.controls['rangeMinInput'].setValidators([]);
       this.form.controls['rangeMaxInput'].setValidators([]);
       this.form.controls['precisionInput'].setValidators([]);
@@ -81,37 +84,58 @@ export class NewInputComponent implements OnInit {
       this.form.controls['precisionInput'].updateValueAndValidity();
 
     }
+
+    if (
+      format.name === 'BOOLEAN' ||
+      format.name === 'DATE-TIME' ||
+      format.name === 'CDATA' ||
+      format.name === 'URL') {
+      console.log('sdjnj');
+
+      this.showEnum = false;
+
+    } else if (format.name === 'NONE') {
+      this.showEnum = true;
+    }
+
   }
 
 
-  onSubmit(){
+  onSubmit() {
     console.log(this.newInput);
   }
 
+  setValues(dataType) {
+    if (dataType.name === 'OBJECT') {
+      this.newInput['defaultValue'] = '';
+      this.newInput['format'] = '';
 
-  manageFormCancel(){
+    }
+  }
+
+  manageFormCancel() {
     this.manageData.changeCurrentShowForm(false);
   }
 
   greaterThan(field: string): ValidatorFn {
-    return (control: AbstractControl): {[key: string]: any} => {
+    return (control: AbstractControl): { [key: string]: any } => {
       const group = control.parent;
       const fieldToCompare = group.get('rangeMaxInput');
       const isLessThan = Number(fieldToCompare.value) < Number(control.value);
-      return isLessThan ? {'lessThan': {value: control.value}} : null;
+      return isLessThan ? { 'lessThan': { value: control.value } } : null;
     }
   }
 
   lessThan(field: string): ValidatorFn {
-    return (control: AbstractControl): {[key: string]: any} => {
+    return (control: AbstractControl): { [key: string]: any } => {
       const group = control.parent;
       const fieldToCompare = group.get('rangeMinInput');
       const isGreaterThan = Number(fieldToCompare.value) > Number(control.value);
-      return isGreaterThan ? {'greaterThan': {value: control.value}} : null;
+      return isGreaterThan ? { 'greaterThan': { value: control.value } } : null;
     }
   }
 
-    
+
 
 
 
