@@ -32,13 +32,21 @@ export class NewInputComponent implements OnInit {
 
   form: FormGroup;
   submitted = false;
-  newInput = {};
+  newInput = {
+    'dataType': 'STRING',
+    'format': 'NONE',
+    'enumerations': []
+  };
+
+  dataEnum;
   showEnum = true;
   listObservableInputs;
 
   public dataTypes = [{ 'name': 'STRING' }, { 'name': 'OBJECT' }];
   public formats = [{ 'name': 'NONE' }, { 'name': 'NUMBER' }, { 'name': 'BOOLEAN' }, { 'name': 'DATE-TIME' }, { 'name': 'CDATA' }, { 'name': 'URL' }];
 
+  public listEnum = [{'name':'Enum1'}, {'name':'Enum2'}];
+  
   constructor(private fb: FormBuilder, private manageData: ManageDataService) { }
 
   ngOnInit() {
@@ -103,11 +111,18 @@ export class NewInputComponent implements OnInit {
 
   onSubmit() {
     if (this.form.valid) {
-      console.log('valid')
+      this.manageData.changeInputJson(JSON.stringify(this.newInput));
     } else {
       console.log('No valid');
-
     }
+  }
+
+  manageEnum(newEmun){
+    this.dataEnum = newEmun.name; 
+  }
+
+  addEnumToList(){
+    this.newInput.enumerations.push(this.dataEnum);
   }
 
   setValues(dataType) {

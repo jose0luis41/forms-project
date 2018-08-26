@@ -1,3 +1,5 @@
+$main-color: #4650B2;
+
 .input-left{
     margin-right: 40px;
 
@@ -7,13 +9,18 @@
 }
 
 .input-enum{
-    margin-right: 40px;
+    margin-right: 5px;
     width: 330px;
 
     @media screen and (max-width: 823px) {
-        width: 850%;
+        width: 80%;
     }
 }
+
+
+
+
+
 
 
 .input-right {
@@ -59,4 +66,47 @@
 
 .save-button{
     margin-right: 10px;
+}
+
+mat-icon{
+    font-size: 19px;
+    height: 29px;
+    width: 29px;
+    margin-right: 0;
+}
+
+
+.material-icons{
+    font-size: 26px;
+    color: $main-color;
+}
+
+.material-block{
+    color: gray;
+    cursor: none;
+}
+
+
+p{
+    cursor: pointer;
+    background: #E4E2E2;
+
+    @media screen and (max-width: 823px) {
+        margin-right: 20px;
+    }
+}
+
+.div-enum{
+    position: relative;
+    display: inline-block;
+
+    @media screen and (max-width: 823px) {
+        display: inline-flex;
+    }
+}
+
+.background-add{
+    background: white;
+    margin-right: 23px;
+
 }

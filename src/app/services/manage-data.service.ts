@@ -9,10 +9,13 @@ export class ManageDataService {
   private category = new BehaviorSubject<string>('DeviceInfo');
   private listInputs = new BehaviorSubject<any[]>([]);
   private showForm = new BehaviorSubject<boolean>(false);
+  private inputJson = new BehaviorSubject<string>('');
 
   currentCategory = this.category.asObservable();
   currentShowForm = this.showForm.asObservable();
   currentListInputs = this.listInputs.asObservable();
+  currentInputJson = this.inputJson.asObservable(); 
+
   constructor() { console.log('Connected')}
 
 
@@ -27,9 +30,9 @@ export class ManageDataService {
   changeListInputs(list: any[]){
     this.listInputs.next(list);
   }
-  
-  getListInputs(){
-    return  this.currentListInputs;
+
+  changeInputJson(json:string){
+    this.inputJson.next(json);
   }
 
 

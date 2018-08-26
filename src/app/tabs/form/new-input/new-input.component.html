@@ -48,9 +48,26 @@
   </div>
 
 
-  <mat-form-field class="input-enum" *ngIf="showEnum">
-    <input type="text" matInput formControlName="enmuerationInput" [(ngModel)]="newInput.enumerations" placeholder="Enumerations">
-  </mat-form-field>
+  <div *ngIf="showEnum">
+    <mat-form-field class="input-enum">
+      <input type="text" matInput formControlName="enmuerationInput" [(ngModel)]="dataEnum" placeholder="Enumerations">
+    </mat-form-field>
+
+    <button mat-mini-fab class="background-add" [disabled]="!dataEnum" (click)="addEnumToList()">
+      <mat-icon md-12 aria-label="Details" class="icon-plus">
+        add_circle
+      </mat-icon>
+    </button>
+
+
+    <div class="div-enum">
+      <p *ngFor="let enum of listEnum" (click)="manageEnum(enum)">
+        {{enum.name}}
+      </p>
+    </div>
+
+  </div>
+
 
   <div *ngIf="newInput.format && newInput.format === 'NUMBER' && newInput.dataType && newInput.dataType === 'STRING'">
     <mat-form-field class="input-range input-margin">

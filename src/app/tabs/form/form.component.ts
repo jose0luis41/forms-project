@@ -91,6 +91,7 @@ export class FormComponent implements OnInit {
 
   currentCategory: string;
   listInputs : string[];
+  newJson;
 
   constructor(private fb: FormBuilder, private manageData: ManageDataService) { }
 
@@ -102,11 +103,26 @@ export class FormComponent implements OnInit {
 
     this.manageData.currentShowForm.subscribe(show => this.showNewInputForm = show);
     this.manageData.changeListInputs(this.inputs);
+
     this.manageData.currentCategory.subscribe(category => {
       this.currentCategory = category;
       this.createForm(this.inputs);
 
     });
+
+    this.manageData.currentInputJson.subscribe(json => {
+      if(json){
+        this.newJson = JSON.parse(json);
+        this.newJson['category'] = this.currentCategory;
+        this.inputs.push(this.newJson);
+        this.showNewInputForm = false;
+        this.createForm(this.inputs)
+      }
+     
+    });
+
+
+  
     this.createForm(this.inputs);
   }
 
@@ -125,12 +141,16 @@ export class FormComponent implements OnInit {
   }
 
   showDetails(input) {
-    console.log();
     if (input.controls.showDetails.value === true) {
       input.controls.showDetails.value = false;
     } else {
       input.controls.showDetails.value = true;
     }
+  }
+
+  manageAddNewInput(input){
+    var control = <FormArray>this.inputForm.controls['inputs'];
+    control.push(this.buildInput(input));
   }
 
   removeInput(input){
@@ -143,12 +163,6 @@ export class FormComponent implements OnInit {
       }
       
     }
-    console.log(this.inputForm);
-    console.log(input);
-  }
-
-  ngOnChange() {
-    console.log('change');
   }
 
   buildInput(input): FormGroup {
