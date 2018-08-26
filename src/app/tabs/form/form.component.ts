@@ -90,6 +90,7 @@ export class FormComponent implements OnInit {
   ]
 
   currentCategory: string;
+  listInputs : string[];
 
   constructor(private fb: FormBuilder, private manageData: ManageDataService) { }
 
@@ -100,7 +101,7 @@ export class FormComponent implements OnInit {
   ngOnInit() {
 
     this.manageData.currentShowForm.subscribe(show => this.showNewInputForm = show);
-
+    this.manageData.changeListInputs(this.inputs);
     this.manageData.currentCategory.subscribe(category => {
       this.currentCategory = category;
       this.createForm(this.inputs);

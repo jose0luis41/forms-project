@@ -7,10 +7,12 @@ import {BehaviorSubject} from 'rxjs/';
 export class ManageDataService {
 
   private category = new BehaviorSubject<string>('DeviceInfo');
+  private listInputs = new BehaviorSubject<any[]>([]);
   private showForm = new BehaviorSubject<boolean>(false);
 
   currentCategory = this.category.asObservable();
   currentShowForm = this.showForm.asObservable();
+  currentListInputs = this.listInputs.asObservable();
   constructor() { console.log('Connected')}
 
 
@@ -21,4 +23,14 @@ export class ManageDataService {
   changeCurrentShowForm(show: boolean){
     this.showForm.next(show);
   }
+
+  changeListInputs(list: any[]){
+    this.listInputs.next(list);
+  }
+  
+  getListInputs(){
+    return  this.currentListInputs;
+  }
+
+
 }

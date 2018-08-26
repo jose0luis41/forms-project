@@ -34,6 +34,7 @@ export class NewInputComponent implements OnInit {
   submitted = false;
   newInput = {};
   showEnum = true;
+  listObservableInputs;
 
   public dataTypes = [{ 'name': 'STRING' }, { 'name': 'OBJECT' }];
   public formats = [{ 'name': 'NONE' }, { 'name': 'NUMBER' }, { 'name': 'BOOLEAN' }, { 'name': 'DATE-TIME' }, { 'name': 'CDATA' }, { 'name': 'URL' }];
@@ -41,9 +42,10 @@ export class NewInputComponent implements OnInit {
   constructor(private fb: FormBuilder, private manageData: ManageDataService) { }
 
   ngOnInit() {
+    this.manageData.currentListInputs.subscribe(list => this.listObservableInputs = list);
 
     this.form = this.fb.group({
-      'nameInput': ['', Validators.required],
+      'nameInput': ['', [Validators.required, this.checkEqualsNames.bind(this)]],
       'descriptionInput': ['',],
       'deviceInput': ['',],
       'defaultValueInput': ['',],
@@ -90,8 +92,6 @@ export class NewInputComponent implements OnInit {
       format.name === 'DATE-TIME' ||
       format.name === 'CDATA' ||
       format.name === 'URL') {
-      console.log('sdjnj');
-
       this.showEnum = false;
 
     } else if (format.name === 'NONE') {
@@ -102,13 +102,19 @@ export class NewInputComponent implements OnInit {
 
 
   onSubmit() {
-    console.log(this.newInput);
+    if (this.form.valid) {
+      console.log('valid')
+    } else {
+      console.log('No valid');
+
+    }
   }
 
   setValues(dataType) {
     if (dataType.name === 'OBJECT') {
       this.newInput['defaultValue'] = '';
       this.newInput['format'] = '';
+      this.showEnum = false;
 
     }
   }
@@ -134,6 +140,23 @@ export class NewInputComponent implements OnInit {
       return isGreaterThan ? { 'greaterThan': { value: control.value } } : null;
     }
   }
+
+  checkEqualsNames(control: AbstractControl) {
+    var isEqual = null;
+
+    for (let index = 0; index < this.listObservableInputs.length && isEqual === null; index++) {
+      const currentElement = this.listObservableInputs[index];
+      if (control.value === currentElement.name) {
+        isEqual = true;
+        return { 'isEqual': true };
+      }
+    }
+    return isEqual;
+  }
+
+
+
+
 
 
 
