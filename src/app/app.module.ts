@@ -5,7 +5,7 @@ import { AppComponent} from './app.component';
 import { AppRoutingModule, routingComponents } from './app-routing.module';
 import { TabsComponent } from './tabs/tabs.component';
 import { FormComponent } from './tabs/form/form.component';
-import { MatCardModule } from '@angular/material';
+import { MatCardModule, MatSnackBarModule } from '@angular/material';
 import {MatDividerModule} from '@angular/material/divider';
 import {ManageDataService} from './services/manage-data.service';
 import { NewInputComponent } from './tabs/form/new-input/new-input.component';
@@ -28,8 +28,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatCardModule,
     AppRoutingModule,
     FormComponent,
-    MatDividerModule
-    
+    MatDividerModule,
+    MatSnackBarModule
 
   ],
   providers: [ManageDataService],

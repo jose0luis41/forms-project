@@ -9,11 +9,10 @@ $main-color: #4650B2;
 }
 
 .input-enum{
-    margin-right: 5px;
     width: 330px;
 
     @media screen and (max-width: 823px) {
-        width: 80%;
+        width: 100%;
     }
 }
 
@@ -21,7 +20,19 @@ $main-color: #4650B2;
 
 
 
+.div-container-enum{
+    display: flex;
 
+    .enum-div{
+        display: inline-block;
+        margin-bottom: 20px;
+        margin-right: 13px;
+    
+        @media screen and (max-width: 823px) {
+            width: 85%;
+        }
+      }
+}
 
 .input-right {
 
@@ -88,9 +99,7 @@ mat-icon{
 
 
 p{
-    cursor: pointer;
-    background: #E4E2E2;
-
+    margin: 0 0 0 0;
     @media screen and (max-width: 823px) {
         margin-right: 20px;
     }
@@ -100,8 +109,24 @@ p{
     position: relative;
     display: inline-block;
 
-    @media screen and (max-width: 823px) {
+    @media screen and (max-width: 530px) {
         display: inline-flex;
+    }
+
+    .div-child{
+    background: #E4E2E2;
+    display: flex;  
+    margin-bottom: 10px;  
+
+    @media screen and (max-width: 530px) {
+       margin-right: 10px;
+    }
+
+      i{
+        cursor: pointer;
+          color: red;
+          font-size: 17px;
+      }
     }
 }
 
@@ -109,4 +134,48 @@ p{
     background: white;
     margin-right: 23px;
 
+    @media screen and (max-width: 404px) {
+        margin-right: 0;
+    }
+
 }
+
+.div-errors{
+    //width: 100% !important;
+    margin-top: -10px;
+    font-family: Roboto,"Helvetica Neue",sans-serif;
+    color: red;
+    font-size: 11px;
+    margin-left: 0px;
+    margin-bottom: 8px;
+    min-width: 100px !important;
+    display: table;
+    .div-manage-errors{
+        font-family: Roboto,"Helvetica Neue",sans-serif;
+        color: red;
+        display: inline-block;
+      min-width: 100px !important;
+      margin: auto;
+      text-align: start;
+    }
+  }
+
+  .name-div{
+    display: inline-block;
+
+    @media screen and (max-width: 823px) {
+        width: 100%;
+    }
+  }
+
+
+
+  .range-input-div{
+    display: inline-block;
+
+    @media screen and (max-width: 823px) {
+        width: 100%;
+    }
+  }
+
+  

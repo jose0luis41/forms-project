@@ -1,5 +1,5 @@
 import { Component, OnInit, NgModule } from '@angular/core';
-import { MatFormFieldModule, MatInputModule, MatSelectModule, MatSelect, MatFormField, MatInput } from '@angular/material';
+import { MatFormFieldModule, MatInputModule, MatSelectModule, MatSelect, MatFormField, MatInput, MatSnackBarModule, MatSnackBar } from '@angular/material';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
 import { ManageDataService } from '../../../services/manage-data.service';
 
@@ -18,6 +18,7 @@ import { ManageDataService } from '../../../services/manage-data.service';
     FormsModule,
     ReactiveFormsModule,
     MatSelectModule,
+    MatSnackBarModule
 
   ],
   exports: [
@@ -33,23 +34,36 @@ export class NewInputComponent implements OnInit {
   form: FormGroup;
   submitted = false;
   newInput = {
+    'name': null,
+    'description': null,
+    'defaultValue': null,
     'dataType': 'STRING',
     'format': 'NONE',
+    'deviceResource': null,
+    'showDetails': false,
+    'rangeMin': null,
+    'rangeMax': null,
+    'unitMeasure': null,
+    'precision': null,
+    'accuracy': null,
     'enumerations': []
   };
 
+  isPressAddNum = false;
   dataEnum;
   showEnum = true;
   listObservableInputs;
+  unamePattern = "^[a-z0-9_-]{8,15}$"; 
 
   public dataTypes = [{ 'name': 'STRING' }, { 'name': 'OBJECT' }];
   public formats = [{ 'name': 'NONE' }, { 'name': 'NUMBER' }, { 'name': 'BOOLEAN' }, { 'name': 'DATE-TIME' }, { 'name': 'CDATA' }, { 'name': 'URL' }];
 
   public listEnum = [{'name':'Enum1'}, {'name':'Enum2'}];
   
-  constructor(private fb: FormBuilder, private manageData: ManageDataService) { }
+  constructor(private fb: FormBuilder, private manageData: ManageDataService, public snackBar: MatSnackBar) { }
 
   ngOnInit() {
+
     this.manageData.currentListInputs.subscribe(list => this.listObservableInputs = list);
 
     this.form = this.fb.group({
@@ -76,11 +90,13 @@ export class NewInputComponent implements OnInit {
 
       this.form.controls['rangeMinInput'].setValidators([Validators.required, this.greaterThan('rangeMaxInput')]);
       this.form.controls['rangeMaxInput'].setValidators([Validators.required, , this.lessThan('rangeMinInput')]);
-      this.form.controls['precisionInput'].setValidators([Validators.required]);
+      this.form.controls['precisionInput'].setValidators([Validators.required, this.divideRanges('precisionInput')]);
+      this.form.controls['accuracyInput'].setValidators([this.divideRanges('accuracyInput')]);
 
       this.form.controls['rangeMinInput'].updateValueAndValidity();
       this.form.controls['rangeMaxInput'].updateValueAndValidity();
       this.form.controls['precisionInput'].updateValueAndValidity();
+      this.form.controls['accuracyInput'].updateValueAndValidity();
 
 
 
@@ -88,10 +104,12 @@ export class NewInputComponent implements OnInit {
       this.form.controls['rangeMinInput'].setValidators([]);
       this.form.controls['rangeMaxInput'].setValidators([]);
       this.form.controls['precisionInput'].setValidators([]);
+      this.form.controls['accuracyInput'].setValidators([]);
 
       this.form.controls['rangeMinInput'].updateValueAndValidity();
       this.form.controls['rangeMaxInput'].updateValueAndValidity();
       this.form.controls['precisionInput'].updateValueAndValidity();
+      this.form.controls['accuracyInput'].updateValueAndValidity();
 
     }
 
@@ -110,26 +128,48 @@ export class NewInputComponent implements OnInit {
 
 
   onSubmit() {
-    if (this.form.valid) {
+    if (this.form.valid &&  !this.isPressAddNum) {
       this.manageData.changeInputJson(JSON.stringify(this.newInput));
     } else {
       console.log('No valid');
     }
   }
 
-  manageEnum(newEmun){
-    this.dataEnum = newEmun.name; 
+  removeEnumValues(newEmun){
+    console.log('asdjhnads');
+    var index = this.newInput.enumerations.indexOf(newEmun);
+    console.log(index);
+    this.newInput.enumerations.splice(index,1);
+
+    console.log(this.newInput.enumerations);
   }
 
-  addEnumToList(){
-    this.newInput.enumerations.push(this.dataEnum);
+  addEnumToList(value){
+    if(value){
+      this.isPressAddNum = true;
+      this.newInput.enumerations.push(this.dataEnum);
+      this.snackBar.open(this.dataEnum +' has been added successfully', 'OK', {
+        duration: 6000,
+      });
+      this.dataEnum = null;
+      console.log(this.newInput);
+
+    }else{
+      this.isPressAddNum = false;
+    }
+
   }
+
 
   setValues(dataType) {
     if (dataType.name === 'OBJECT') {
-      this.newInput['defaultValue'] = '';
-      this.newInput['format'] = '';
+      this.newInput['defaultValue'] = null;
+      this.newInput['format'] = null;
       this.showEnum = false;
+
+    }else{
+      this.newInput['format'] = 'NONE';
+      this.showEnum = true;
 
     }
   }
@@ -156,6 +196,19 @@ export class NewInputComponent implements OnInit {
     }
   }
 
+  divideRanges(value): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } => {
+      const group = control.parent;
+      var fieldToCompareRangemin = group.get('rangeMinInput');
+      var fieldToCompareRangeMax = group.get('rangeMaxInput');
+      var precisionInput = group.get(value);
+      const isOkDivison = (Number(fieldToCompareRangeMax.value) /  Number(fieldToCompareRangemin.value)) !== Number(precisionInput.value);
+      return isOkDivison ? { 'isOk': { value: control.value } } : null;
+    }
+  }
+
+  
+
   checkEqualsNames(control: AbstractControl) {
     var isEqual = null;
 
@@ -170,6 +223,9 @@ export class NewInputComponent implements OnInit {
   }
 
 
+  get formGr() {
+    return this.form.controls;
+  }
 
 
 
