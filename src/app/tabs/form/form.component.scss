@@ -81,10 +81,14 @@ mat-card{
     //display: table; 
     justify-content: flex-start;
     display: flex;
+
+    .mat-icon{
+        color: #4650B2;
+    }
 }
 
 p{
-    margin: 3px 0 0 0;
+    margin: 2px 0 0 0;
 }
 
 

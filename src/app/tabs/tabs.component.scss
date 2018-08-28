@@ -1,11 +1,15 @@
 
 
 /deep/ mat-tab-group{
+ 
+
+    display: inherit !important; 
     .mat-tab-header{
         max-width: 800px;
+        min-width: 300px !important;
         margin-left: auto !important;
         margin-right: auto !important;
-        background: white
+        background: white;
     }
 
     .mat-tab-header, .mat-tab-nav-bar {
@@ -13,14 +17,15 @@
         border-top: 1px solid rgba(0,0,0,.12);
         border-left: 1px solid rgba(0,0,0,.12);
         border-right: 1px solid rgba(0,0,0,.12);
+       
     
     }
-
-
 
     .mat-tab-label {
         border-left: 1px solid rgba(0,0,0,.12);
         border-right: 1px solid rgba(0,0,0,.12);
+        
     }
+
 }
 
