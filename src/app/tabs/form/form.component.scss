@@ -100,3 +100,26 @@ mat-icon{
 .readonly-wrapper .readonly-block {
     pointer-events: none;
 }
+
+.div-enum{
+    position: relative;
+    display: inline-block;
+    margin-top: 18px;
+    margin-bottom: 16px;
+    .div-child{
+    background: #E4E2E2;
+    display: inherit;
+    margin-right: 15px;
+
+    @media screen and (max-width: 471px) {
+       margin-bottom: 10px;
+    }
+
+    }
+    p{
+        margin: 1px 0 0 0;
+    }
+}
+h4{
+    margin: 0 0 10px 0;
+}

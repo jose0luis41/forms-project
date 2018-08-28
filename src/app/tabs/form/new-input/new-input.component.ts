@@ -148,11 +148,11 @@ export class NewInputComponent implements OnInit {
     if(value){
       this.isPressAddNum = true;
       this.newInput.enumerations.push(this.dataEnum);
+      this.manageData.changeSendEnum(this.dataEnum);
       this.snackBar.open(this.dataEnum +' has been added successfully', 'OK', {
         duration: 6000,
       });
       this.dataEnum = null;
-      console.log(this.newInput);
 
     }else{
       this.isPressAddNum = false;

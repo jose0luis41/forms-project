@@ -43,10 +43,10 @@ export class FormComponent implements OnInit {
   inputForm: FormGroup;
   inputs = [
     {
-      'name': 'Testing',
-      'description': 'testing Description',
+      'name': 'Device Info',
+      'description': 'Device Info Testing',
       'deviceResource': 'Default Value',
-      'defaultValue': 'Default value testing',
+      'defaultValue': 'Default test',
       'dataType': 'STRING',
       'format': 'NUMBER',
       'category': 'DeviceInfo',
@@ -56,14 +56,66 @@ export class FormComponent implements OnInit {
       'unitMeasure': 'cm',
       'precision': 2,
       'accuracy': 2,
+      'enumerations': ['TEST1', 'TEST2']
     },
     {
-      'name': 'Testing1',
-      'description': 'Testing 1 Description',
+      'name': 'Device Info 2',
+      'description': 'Device Infor Testing 12 Description',
       'deviceResource': 'Default 1 Value',
-      'defaultValue': 'Default 1 value testing',
+      'defaultValue': 'Default test 2',
       'dataType': 'STRING',
       'format': 'BOOLEAN',
+      'category': 'DeviceInfo',
+      'showDetails': false,
+      'rangeMin': null,
+      'rangeMax': null,
+      'unitMeasure': null,
+      'precision': null,
+      'accuracy': null,
+      'enumerations': []
+
+    },
+    {
+      'name': 'Sensors',
+      'description': 'Testing Sensors description',
+      'deviceResource': 'Default Value',
+      'defaultValue': 'Default sensors',
+      'dataType': 'STRING',
+      'format': 'NUMBER',
+      'category': 'Sensors',
+      'showDetails': false,
+      'rangeMin': 10,
+      'rangeMax': 100,
+      'unitMeasure': 'mm',
+      'precision': 10,
+      'accuracy': 10,
+      'enumerations': []
+
+    },
+    {
+      'name': 'Settings',
+      'description': 'Testing Settings description',
+      'deviceResource': 'Default Value',
+      'defaultValue': 'Default Settings',
+      'dataType': 'STRING',
+      'format': 'NUMBER',
+      'category': 'Settings',
+      'showDetails': false,
+      'rangeMin': 20,
+      'rangeMax': 400,
+      'unitMeasure': 'mm',
+      'precision': 20,
+      'accuracy': 20,
+      'enumerations': []
+
+    },
+    {
+      'name': 'Metadata',
+      'description': 'Testing Metadata description',
+      'deviceResource': 'Default Value',
+      'defaultValue': 'Default Metadata',
+      'dataType': 'OBJECT',
+      'format': null,
       'category': 'Metadata',
       'showDetails': false,
       'rangeMin': null,
@@ -71,27 +123,15 @@ export class FormComponent implements OnInit {
       'unitMeasure': null,
       'precision': null,
       'accuracy': null,
-    },
-    {
-      'name': 'Testing 2',
-      'description': 'testing 2 Description',
-      'deviceResource': 'Default Value',
-      'defaultValue': 'Default 2 value testing',
-      'dataType': 'STRING',
-      'format': 'NUMBER',
-      'category': 'DeviceInfo',
-      'showDetails': false,
-      'rangeMin': 40,
-      'rangeMax': 20,
-      'unitMeasure': 'mm',
-      'precision': 10,
-      'accuracy': 10,
+      'enumerations': []
+
     },
   ]
 
   currentCategory: string;
-  listInputs : string[];
+  listInputs: string[];
   newJson;
+  isSentEnum;
 
   constructor(private fb: FormBuilder, private manageData: ManageDataService) { }
 
@@ -104,6 +144,14 @@ export class FormComponent implements OnInit {
     this.manageData.currentShowForm.subscribe(show => this.showNewInputForm = show);
     this.manageData.changeListInputs(this.inputs);
 
+  /*   this.manageData.currentSendEnum.subscribe(isSent => {
+      this.isSentEnum = isSent;
+
+      if(this.isSentEnum.length > 0){
+        this.addEnumToArray();
+      }
+    }); */
+
     this.manageData.currentCategory.subscribe(category => {
       this.currentCategory = category;
       this.createForm(this.inputs);
@@ -111,18 +159,18 @@ export class FormComponent implements OnInit {
     });
 
     this.manageData.currentInputJson.subscribe(json => {
-      if(json){
+      if (json) {
         this.newJson = JSON.parse(json);
         this.newJson['category'] = this.currentCategory;
         this.inputs.push(this.newJson);
         this.showNewInputForm = false;
         this.createForm(this.inputs)
       }
-     
+
     });
 
 
-  
+
     this.createForm(this.inputs);
   }
 
@@ -141,6 +189,7 @@ export class FormComponent implements OnInit {
   }
 
   showDetails(input) {
+    console.log(input.controls);
     if (input.controls.showDetails.value === true) {
       input.controls.showDetails.value = false;
     } else {
@@ -148,20 +197,20 @@ export class FormComponent implements OnInit {
     }
   }
 
-  manageAddNewInput(input){
+  manageAddNewInput(input) {
     var control = <FormArray>this.inputForm.controls['inputs'];
     control.push(this.buildInput(input));
   }
 
-  removeInput(input){
+  removeInput(input) {
     var control = <FormArray>this.inputForm.controls['inputs'];
 
     for (let index = 0; index < this.inputForm.value.inputs.length; index++) {
       var currentInputForm = this.inputForm.value.inputs[index];
-      if(currentInputForm.name === input.value.name){
+      if (currentInputForm.name === input.value.name) {
         control.removeAt(index);
       }
-      
+
     }
   }
 
@@ -182,11 +231,23 @@ export class FormComponent implements OnInit {
       unitMeasure: [input.unitMeasure],
       precision: [input.precision],
       accuracy: [input.accuracy],
-
+      enumerations: this.addEnumToArray(input)
     })
   }
 
-  addNewInput(){
+
+  addEnumToArray(inputParameter) {
+    let arr = new FormArray([]);
+    inputParameter.enumerations.forEach(element => {
+      arr.push(this.fb.group({
+        element: element
+      }))
+    });
+
+    return arr;
+  }
+
+  addNewInput() {
     this.showNewInputForm = true;
   }
 

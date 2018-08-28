@@ -10,11 +10,13 @@ export class ManageDataService {
   private listInputs = new BehaviorSubject<any[]>([]);
   private showForm = new BehaviorSubject<boolean>(false);
   private inputJson = new BehaviorSubject<string>('');
+  private sendEnum = new BehaviorSubject<string>('');
 
   currentCategory = this.category.asObservable();
   currentShowForm = this.showForm.asObservable();
   currentListInputs = this.listInputs.asObservable();
   currentInputJson = this.inputJson.asObservable(); 
+  currentSendEnum = this.sendEnum.asObservable();
 
   constructor() { console.log('Connected')}
 
@@ -33,6 +35,10 @@ export class ManageDataService {
 
   changeInputJson(json:string){
     this.inputJson.next(json);
+  }
+
+  changeSendEnum(value: string){
+    this.sendEnum.next(value);
   }
 
 
