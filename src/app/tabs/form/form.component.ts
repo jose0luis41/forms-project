@@ -8,7 +8,8 @@ import { MatIconModule, MatIcon } from '../../../../node_modules/@angular/materi
 @Component({
   selector: 'app-form',
   templateUrl: './form.component.html',
-  styleUrls: ['./form.component.scss']
+  styleUrls: ['./form.component.scss'],
+  
 })
 
 @NgModule({
@@ -57,8 +58,8 @@ export class FormComponent implements OnInit {
       'precision': 2,
       'accuracy': 2,
       'enumerations': ['TEST1', 'TEST2']
-    },
-    {
+    }
+   /*  {
       'name': 'Device Info 2',
       'description': 'Device Infor Testing 12 Description',
       'deviceResource': 'Default 1 Value',
@@ -125,7 +126,7 @@ export class FormComponent implements OnInit {
       'accuracy': null,
       'enumerations': []
 
-    },
+    }, */
   ]
 
   currentCategory: string;

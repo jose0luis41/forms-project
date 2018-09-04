@@ -136,12 +136,9 @@ export class NewInputComponent implements OnInit {
   }
 
   removeEnumValues(newEmun){
-    console.log('asdjhnads');
     var index = this.newInput.enumerations.indexOf(newEmun);
-    console.log(index);
     this.newInput.enumerations.splice(index,1);
 
-    console.log(this.newInput.enumerations);
   }
 
   addEnumToList(value){

@@ -142,6 +142,9 @@
         <app-new-input *ngIf="showNewInputForm"></app-new-input>
 
 
+        <div *ngFor="let input of inputs">
+        <pre> {{input |json}}</pre>
+        </div>
     </mat-card-content>
 
 </mat-card>
