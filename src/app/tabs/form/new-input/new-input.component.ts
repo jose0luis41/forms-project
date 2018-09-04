@@ -221,14 +221,14 @@ export class NewInputComponent implements OnInit {
   }
 
 
-  setValues(dataType) {
+  setValues(dataType, input) {
     if (dataType.name === 'OBJECT') {
-      this.newInput['defaultValue'] = null;
-      this.newInput['format'] = null;
+      input.get('formatInput').value = null;
+      input.get('defaultValue').value = null;
       this.showEnum = false;
 
     } else {
-      this.newInput['format'] = 'NONE';
+      input.get('formatInput').value = 'NONE';
       this.showEnum = true;
 
     }
@@ -262,7 +262,8 @@ export class NewInputComponent implements OnInit {
       var fieldToCompareRangemin = group.get('rangeMinInput');
       var fieldToCompareRangeMax = group.get('rangeMaxInput');
       var precisionInput = group.get(value);
-      const isOkDivison = (Number(fieldToCompareRangeMax.value) / Number(fieldToCompareRangemin.value)) !== Number(precisionInput.value);
+      const isOkDivison = (Number(fieldToCompareRangeMax.value) - Number(fieldToCompareRangemin.value)) % Number(precisionInput.value) !== 0;
+      console.log(isOkDivison);
       return isOkDivison ? { 'isOk': { value: control.value } } : null;
     }
   }

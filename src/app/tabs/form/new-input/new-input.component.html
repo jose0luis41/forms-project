@@ -36,7 +36,7 @@
 
 
             <mat-form-field class="input-right">
-              <input type="text" matInput formControlName="defaultValueInput" [(ngModel)]="input.get('defaultValueInput').value" [readOnly]="newInput.dataType === 'OBJECT'"
+              <input type="text" matInput formControlName="defaultValueInput" [(ngModel)]="input.get('defaultValueInput').value" [readOnly]="input.get('dataTypeInput').value === 'OBJECT'"
                 placeholder="Default Value">
             </mat-form-field>
           </div>
@@ -44,7 +44,7 @@
           <div>
             <mat-form-field class="input-left readonly-wrapper">
               <mat-select formControlName="dataTypeInput" [(ngModel)]="input.get('dataTypeInput').value" placeholder="Data Type" class="readonly-block">
-                <mat-option *ngFor="let dataType of dataTypes" (click)="setValues(dataType)" [value]="dataType.name">
+                <mat-option *ngFor="let dataType of dataTypes" (click)="setValues(dataType, input)" [value]="dataType.name">
                   {{dataType.name}}
                 </mat-option>
               </mat-select>
@@ -82,7 +82,7 @@
           </div>
 
 
-           <div class="div-enum" *ngIf="input.get('enumerations').length >0">
+          <div class="div-enum" *ngIf="input.get('enumerations').length >0">
             <div class="div-child" *ngFor="let enum of input.get('enumerations').value">
               <p>
                 {{enum.element}}
@@ -92,7 +92,7 @@
               </i>
             </div>
 
-          </div> 
+          </div>
 
 
           <div *ngIf="input.get('formatInput') && input.get('formatInput').value === 'NUMBER' && input.get('dataTypeInput') && input.get('dataTypeInput').value === 'STRING'">
@@ -100,12 +100,12 @@
               <mat-form-field class="input-range input-margin">
                 <input type="number" matInput formControlName="rangeMinInput" [(ngModel)]="input.get('rangeMinInput').value" placeholder="Range Min">
               </mat-form-field>
-               <div *ngIf="input.get('rangeMinInput').errors && input.get('rangeMinInput').touched" class="div-errors">
-              <div *ngIf="input.get('rangeMinInput').errors.required" class="div-manage-errors">Range min is required.</div>
-              <div *ngIf="!input.get('rangeMinInput').errors.required && input.get('rangeMinInput').invalid" class="div-manage-errors">Range
-                min must be less than Range max.</div>
+              <div *ngIf="input.get('rangeMinInput').errors && input.get('rangeMinInput').touched" class="div-errors">
+                <div *ngIf="input.get('rangeMinInput').errors.required" class="div-manage-errors">Range min is required.</div>
+                <div *ngIf="!input.get('rangeMinInput').errors.required && input.get('rangeMinInput').invalid" class="div-manage-errors">Range
+                  min must be less than Range max.</div>
 
-            </div>
+              </div>
             </div>
 
             <div class="range-input-div">
@@ -113,11 +113,11 @@
               <mat-form-field class="input-range">
                 <input type="number" matInput formControlName="rangeMaxInput" [(ngModel)]="input.get('rangeMaxInput').value" placeholder="Range Max">
               </mat-form-field>
-                  <div *ngIf="input.get('rangeMaxInput').errors && input.get('rangeMaxInput').touched" class="div-errors">
-              <div *ngIf="input.get('rangeMaxInput').errors.required" class="div-manage-errors">Range max is required.</div>
-              <div *ngIf="!input.get('rangeMaxInput').errors.required && input.get('rangeMaxInput').invalid" class="div-manage-errors">Range
-                max must be greater than Range min.</div>
-            </div> 
+              <div *ngIf="input.get('rangeMaxInput').errors && input.get('rangeMaxInput').touched" class="div-errors">
+                <div *ngIf="input.get('rangeMaxInput').errors.required" class="div-manage-errors">Range max is required.</div>
+                <div *ngIf="!input.get('rangeMaxInput').errors.required && input.get('rangeMaxInput').invalid" class="div-manage-errors">Range
+                  max must be greater than Range min.</div>
+              </div>
             </div>
 
           </div>
@@ -132,11 +132,11 @@
                 <input type="number" matInput formControlName="precisionInput" [(ngModel)]="input.get('precisionInput').value" placeholder="Precision (eg: 0.5)">
               </mat-form-field>
 
-                  <div *ngIf="input.get('precisionInput').errors && input.get('precisionInput').touched" class="div-errors">
-              <div *ngIf="input.get('precisionInput').errors.required" class="div-manage-errors">Precision is required.</div>
-              <div *ngIf="!input.get('precisionInput').errors.required && input.get('precisionInput').invalid" class="div-manage-errors">
-                Wrong value.</div>
-            </div> 
+              <div *ngIf="input.get('precisionInput').errors && input.get('precisionInput').touched" class="div-errors">
+                <div *ngIf="input.get('precisionInput').errors.required" class="div-manage-errors">Precision is required.</div>
+                <div *ngIf="!input.get('precisionInput').errors.required && input.get('precisionInput').invalid" class="div-manage-errors">
+                  Wrong value.</div>
+              </div>
             </div>
 
 
@@ -146,19 +146,15 @@
                 <input type="number" matInput formControlName="accuracyInput" [(ngModel)]="input.get('accuracyInput').value" placeholder="Accuracy (eg: 0.5)">
               </mat-form-field>
 
-               <div *ngIf="input.get('accuracyInput').errors && input.get('accuracyInput').touched" class="div-errors">
-              <div *ngIf="input.get('accuracyInput').errors.required" class="div-manage-errors">Accuracy is required.</div>
-              <div *ngIf="!input.get('accuracyInput').errors.required && input.get('accuracyInput').invalid" class="div-manage-errors">
-                Wrong value.</div>
-            </div> 
+              <div *ngIf="input.get('accuracyInput').errors && input.get('accuracyInput').touched" class="div-errors">
+                <div *ngIf="input.get('accuracyInput').errors.required" class="div-manage-errors">Accuracy is required.</div>
+                <div *ngIf="!input.get('accuracyInput').errors.required && input.get('accuracyInput').invalid" class="div-manage-errors">
+                  Wrong value.</div>
+              </div>
 
             </div>
           </div>
 
-          <div class="button-div">
-            <button mat-raised-button color="primary" type="submit" [disabled]="!myForm.form.valid" (click)="addEnumToList(false)" class="save-button">SAVE</button>
-            <button mat-raised-button (click)="manageFormCancel()">CANCEL</button>
-          </div>
           <mat-divider></mat-divider>
 
           <!--    </div> -->
@@ -174,6 +170,11 @@
       </a>
 
       <mat-divider></mat-divider>
+
+      <div class="button-div">
+        <button mat-raised-button color="primary" type="submit" [disabled]="!myForm.form.valid" (click)="addEnumToList(false)" class="save-button">SAVE</button>
+        <button mat-raised-button (click)="manageFormCancel()">CANCEL</button>
+      </div>
 
       <div *ngFor="let input of form.value.inputs">
         <pre> {{input |json}}</pre>
