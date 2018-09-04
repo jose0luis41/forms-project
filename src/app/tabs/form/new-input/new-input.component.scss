@@ -1,5 +1,17 @@
 $main-color: #4650B2;
 
+mat-card{
+    margin-left: auto !important;
+    margin-right: auto !important;
+    max-width: 800px;
+    padding: 0;
+
+    mat-card-content{
+        padding: 24px;
+    }
+
+}
+
 .input-left{
     margin-right: 40px;
 
@@ -16,7 +28,28 @@ $main-color: #4650B2;
     }
 }
 
+.container-div{
+    margin-bottom: 16px;
+}
 
+.a-icon-left{
+    margin: 0 auto 10px -2px;
+    /* margin-right: auto;
+    margin-left: -2px;
+    margin-bottom: 10px; */
+    //justify-content: flex-end;
+    //display: table; 
+    justify-content: flex-start;
+    display: flex;
+
+    .mat-icon{
+        color: #4650B2;
+    }
+
+    p{
+        margin: 5px 0 0 0;
+    }
+}
 
 
 

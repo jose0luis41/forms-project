@@ -127,24 +127,24 @@
 
                 </div>
             </div>
-            <a (click)="addNewInput()" *ngIf="!showNewInputForm" class="a-icon-left">
+           <!--  <a (click)="addNewInput()" *ngIf="!showNewInputForm" class="a-icon-left">
                 <mat-icon md-12 aria-label="Details">add_circle
                 </mat-icon>
                 <p>Add new attribute</p>
             </a>
-
+ -->
             <!--   <div class="button-div">
                 <button mat-raised-button color="primary" type="submit">Register</button>
             </div> -->
 
         </form>
 
-        <app-new-input *ngIf="showNewInputForm"></app-new-input>
+        <app-new-input></app-new-input>
 
 
-        <div *ngFor="let input of inputs">
+        <!-- <div *ngFor="let input of inputs">
         <pre> {{input |json}}</pre>
-        </div>
+        </div> -->
     </mat-card-content>
 
 </mat-card>

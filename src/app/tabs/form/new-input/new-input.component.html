@@ -1,156 +1,189 @@
-<form #myForm="ngForm" [formGroup]="form" (submit)="onSubmit()">
+<mat-card>
+  <mat-card-content>
 
-  <h2 mat-dialog-title>New Input</h2>
+    <form #myForm="ngForm" [formGroup]="form" (submit)="onSubmit()">
 
-  <div class="name-div">
-    <mat-form-field class="input-left">
-      <input type="text" matInput formControlName="nameInput" [(ngModel)]="newInput.name" placeholder="Name">
-    </mat-form-field>
+      <div formArrayName="inputs" *ngFor="let input of form.controls.inputs.controls; let i = index;">
+        <div formGroupName="{{i}}">
 
-    <div *ngIf="formGr.nameInput.errors && formGr.nameInput.touched" class="div-errors">
-      <div *ngIf="formGr.nameInput.errors.required" class="div-manage-errors">Name is required.</div>
-      <div *ngIf="!formGr.nameInput.errors.required && formGr.nameInput.invalid" class="div-manage-errors">{{newInput.name}} already exists.</div>
-    </div>
-  </div>
+          <!--  <div *ngIf="showNewInputForm" class="container-div"> -->
+          <h2 mat-dialog-title>New Input</h2>
 
-  <mat-form-field class="input-right">
-    <input type="text" matInput formControlName="descriptionInput" [(ngModel)]="newInput.description" placeholder="Description">
-  </mat-form-field>
+          <div class="name-div">
+            <mat-form-field class="input-left">
+              <input type="text" matInput formControlName="nameInput" [(ngModel)]="input.get('nameInput').value" placeholder="Name">
+            </mat-form-field>
 
+            <div *ngIf="input.get('nameInput').errors && input.get('nameInput').touched" class="div-errors">
+              <div *ngIf="input.get('nameInput').errors.required" class="div-manage-errors">Name is required.</div>
+              <div *ngIf="!finput.get('nameInput').errors.required && input.get('nameInput').invalid" class="div-manage-errors">{{newInput.name}}
+                already exists.</div>
+            </div>
+          </div>
 
-
-  <div>
-    <mat-form-field class="input-left readonly-wrapper">
-      <mat-select formControlName="deviceInput" placeholder="Device Resource Type" [(ngModel)]="newInput.deviceResource" [disabled]="true"
-        class="readonly-block">
-      </mat-select>
-    </mat-form-field>
-
-
-    <mat-form-field class="input-right">
-      <input type="text" matInput formControlName="defaultValueInput" [(ngModel)]="newInput.defaultValue" [readOnly]="newInput.dataType === 'OBJECT'"
-        placeholder="Default Value">
-    </mat-form-field>
-  </div>
-
-  <div>
-    <mat-form-field class="input-left readonly-wrapper">
-      <mat-select formControlName="dataTypeInput" [(ngModel)]="newInput.dataType" placeholder="Data Type" class="readonly-block">
-        <mat-option *ngFor="let dataType of dataTypes" (click)="setValues(dataType)" [value]="dataType.name">
-          {{dataType.name}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <mat-form-field class="input-left readonly-wrapper">
-      <mat-select formControlName="formatInput" [(ngModel)]="newInput.format" [disabled]="newInput.dataType === 'OBJECT'" placeholder="Format"
-        class="readonly-block">
-        <mat-option *ngFor="let format of formats" (click)="manageValidations(format)" [value]="format.name">
-          {{format.name}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-
-  </div>
+          <mat-form-field class="input-right">
+            <input type="text" matInput formControlName="descriptionInput" [(ngModel)]="input.get('descriptionInput').value" placeholder="Description">
+          </mat-form-field>
 
 
-  <div *ngIf="showEnum" class="div-container-enum">
-    <div class="enum-div">
-      <mat-form-field class="input-enum">
-        <input type="text" matInput formControlName="enmuerationInput" [(ngModel)]="dataEnum" placeholder="Enumerations">
-      </mat-form-field>
-      <div *ngIf="formGr.enmuerationInput.touched" class="div-errors">
-        <div *ngIf="!dataEnum" class="div-manage-errors">Please enter a value.</div>
-      </div>
 
-    </div>
-
-    <button mat-mini-fab class="background-add" name="enumButton" [disabled]="!dataEnum" (click)="addEnumToList(true)">
-      <mat-icon md-12 aria-label="Details" class="icon-plus">
-        add_circle
-      </mat-icon>
-    </button>
-
-  </div>
+          <div>
+            <mat-form-field class="input-left readonly-wrapper">
+              <mat-select formControlName="deviceInput" placeholder="Device Resource Type" [(ngModel)]="input.get('deviceInput').value"
+                [disabled]="true" class="readonly-block">
+              </mat-select>
+            </mat-form-field>
 
 
-  <div class="div-enum" *ngIf="newInput.enumerations.length >0 && showEnum">
-      <div class="div-child" *ngFor="let enum of newInput.enumerations">
-          <p >
-              {{enum}}
-            </p>
-            <i class="material-icons" (click)="removeEnumValues(enum)">
+            <mat-form-field class="input-right">
+              <input type="text" matInput formControlName="defaultValueInput" [(ngModel)]="input.get('defaultValueInput').value" [readOnly]="newInput.dataType === 'OBJECT'"
+                placeholder="Default Value">
+            </mat-form-field>
+          </div>
+
+          <div>
+            <mat-form-field class="input-left readonly-wrapper">
+              <mat-select formControlName="dataTypeInput" [(ngModel)]="input.get('dataTypeInput').value" placeholder="Data Type" class="readonly-block">
+                <mat-option *ngFor="let dataType of dataTypes" (click)="setValues(dataType)" [value]="dataType.name">
+                  {{dataType.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="input-left readonly-wrapper">
+              <mat-select formControlName="formatInput" [(ngModel)]="input.get('formatInput').value" [disabled]="newInput.dataType === 'OBJECT'"
+                placeholder="Format" class="readonly-block">
+                <mat-option *ngFor="let format of formats" (click)="manageValidations(format)" [value]="format.name">
+                  {{format.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+          </div>
+
+
+          <div *ngIf="showEnum" class="div-container-enum">
+            <div class="enum-div">
+              <mat-form-field class="input-enum">
+                <input type="text" matInput formControlName="enumInput" [(ngModel)]="input.get('enumInput').value" placeholder="Enumerations">
+              </mat-form-field>
+              <div *ngIf="input.get('enumInput').touched" class="div-errors">
+                <div *ngIf="!input.get('enumInput').value" class="div-manage-errors">Please enter a value.</div>
+              </div>
+
+            </div>
+
+            <button mat-mini-fab class="background-add" name="enumButton" [disabled]="!dataEnum" (click)="addEnumToList(true)">
+              <mat-icon md-12 aria-label="Details" class="icon-plus">
+                add_circle
+              </mat-icon>
+            </button>
+
+          </div>
+
+
+           <div class="div-enum" *ngIf="input.get('enumerations').length >0">
+            <div class="div-child" *ngFor="let enum of input.get('enumerations').value">
+              <p>
+                {{enum.element}}
+              </p>
+              <i class="material-icons" (click)="removeEnumValues(enum)">
                 clear
-            </i>
+              </i>
+            </div>
+
+          </div> 
+
+
+          <div *ngIf="newInput.format && newInput.format === 'NUMBER' && newInput.dataType && newInput.dataType === 'STRING'">
+            <div class="range-input-div">
+              <mat-form-field class="input-range input-margin">
+                <input type="number" matInput formControlName="rangeMinInput" [(ngModel)]="input.get('rangeMinInput').value" placeholder="Range Min">
+              </mat-form-field>
+              <!--  <div *ngIf="formGr.rangeMinInput.errors && formGr.rangeMinInput.touched" class="div-errors">
+              <div *ngIf="formGr.rangeMinInput.errors.required" class="div-manage-errors">Range min is required.</div>
+              <div *ngIf="!formGr.rangeMinInput.errors.required && formGr.rangeMinInput.invalid" class="div-manage-errors">Range
+                min must be less than Range max.</div>
+
+            </div> -->
+            </div>
+
+            <div class="range-input-div">
+
+              <mat-form-field class="input-range">
+                <input type="number" matInput formControlName="rangeMaxInput" [(ngModel)]="input.get('rangeMaxInput').value" placeholder="Range Max">
+              </mat-form-field>
+              <!--    <div *ngIf="formGr.rangeMaxInput.errors && formGr.rangeMaxInput.touched" class="div-errors">
+              <div *ngIf="formGr.rangeMaxInput.errors.required" class="div-manage-errors">Range max is required.</div>
+              <div *ngIf="!formGr.rangeMaxInput.errors.required && formGr.rangeMaxInput.invalid" class="div-manage-errors">Range
+                max must be greater than Range min.</div>
+            </div> -->
+            </div>
+
+          </div>
+
+          <div *ngIf="newInput.format && newInput.format === 'NUMBER' && newInput.dataType && newInput.dataType === 'STRING'">
+            <mat-form-field class="input-range-last-input input-margin-last-input">
+              <input type="text" matInput formControlName="unitMeasureInput" [(ngModel)]="input.get('unitMeasureInput').value" placeholder="UoM (eg: mm)">
+            </mat-form-field>
+
+            <div class="range-input-div">
+              <mat-form-field class="input-range-last-input input-margin-last-input">
+                <input type="number" matInput formControlName="precisionInput" [(ngModel)]="input.get('precisionInput').value" placeholder="Precision (eg: 0.5)">
+              </mat-form-field>
+
+              <!--    <div *ngIf="formGr.precisionInput.errors && formGr.precisionInput.touched" class="div-errors">
+              <div *ngIf="formGr.precisionInput.errors.required" class="div-manage-errors">Precision is required.</div>
+              <div *ngIf="!formGr.precisionInput.errors.required && formGr.precisionInput.invalid" class="div-manage-errors">
+                Divide RangeMax between RangeMin.</div>
+            </div> -->
+            </div>
+
+
+            <div class="range-input-div">
+
+              <mat-form-field class="input-range-last-input">
+                <input type="number" [pattern]="unamePattern" matInput formControlName="accuracyInput" [(ngModel)]="newInput.accuracy" placeholder="Accuracy (eg: 0.5)">
+              </mat-form-field>
+
+              <!-- <div *ngIf="formGr.accuracyInput.errors && formGr.accuracyInput.touched" class="div-errors">
+              <div *ngIf="formGr.accuracyInput.errors.required" class="div-manage-errors">Accuracy is required.</div>
+              <div *ngIf="!formGr.accuracyInput.errors.required && formGr.accuracyInput.invalid" class="div-manage-errors">
+                Divide RangeMax between RangeMin.</div>
+            </div> -->
+
+            </div>
+          </div>
+
+          <div class="button-div">
+            <button mat-raised-button color="primary" type="submit" [disabled]="!myForm.form.valid" (click)="addEnumToList(false)" class="save-button">SAVE</button>
+            <button mat-raised-button (click)="manageFormCancel()">CANCEL</button>
+          </div>
+          <mat-divider></mat-divider>
+
+          <!--    </div> -->
+
+        </div>
       </div>
-     
-    </div>
 
 
-  <div *ngIf="newInput.format && newInput.format === 'NUMBER' && newInput.dataType && newInput.dataType === 'STRING'">
-    <div class="range-input-div">
-      <mat-form-field class="input-range input-margin">
-        <input type="number" matInput formControlName="rangeMinInput" [(ngModel)]="newInput.rangeMin" placeholder="Range Min">
-      </mat-form-field>
-      <div *ngIf="formGr.rangeMinInput.errors && formGr.rangeMinInput.touched" class="div-errors">
-        <div *ngIf="formGr.rangeMinInput.errors.required" class="div-manage-errors">Range min is required.</div>
-        <div *ngIf="!formGr.rangeMinInput.errors.required && formGr.rangeMinInput.invalid" class="div-manage-errors">Range
-          min must be less than Range max.</div>
+      <a (click)="addNewInput()" *ngIf="true" class="a-icon-left">
+        <mat-icon md-12 aria-label="Details">add_circle
+        </mat-icon>
+        <p>Add new attribute</p>
+      </a>
 
-      </div>
-    </div>
+      <mat-divider></mat-divider>
 
-    <div class="range-input-div">
-
-      <mat-form-field class="input-range">
-        <input type="number" matInput formControlName="rangeMaxInput" [(ngModel)]="newInput.rangeMax" placeholder="Range Max">
-      </mat-form-field>
-      <div *ngIf="formGr.rangeMaxInput.errors && formGr.rangeMaxInput.touched" class="div-errors">
-        <div *ngIf="formGr.rangeMaxInput.errors.required" class="div-manage-errors">Range max is required.</div>
-        <div *ngIf="!formGr.rangeMaxInput.errors.required && formGr.rangeMaxInput.invalid" class="div-manage-errors">Range
-          max must be greater than Range min.</div>
-      </div>
-    </div>
-
-  </div>
-
-  <div *ngIf="newInput.format && newInput.format === 'NUMBER' && newInput.dataType && newInput.dataType === 'STRING'">
-    <mat-form-field class="input-range-last-input input-margin-last-input">
-      <input type="text" matInput formControlName="unitMeasureInput" [(ngModel)]="newInput.unitMeasure" placeholder="UoM (eg: mm)">
-    </mat-form-field>
-
-    <div class="range-input-div">
-      <mat-form-field class="input-range-last-input input-margin-last-input">
-        <input type="number" matInput formControlName="precisionInput" [(ngModel)]="newInput.precision" placeholder="Precision (eg: 0.5)">
-      </mat-form-field>
-
-      <div *ngIf="formGr.precisionInput.errors && formGr.precisionInput.touched" class="div-errors">
-        <div *ngIf="formGr.precisionInput.errors.required" class="div-manage-errors">Precision is required.</div>
-        <div *ngIf="!formGr.precisionInput.errors.required && formGr.precisionInput.invalid" class="div-manage-errors">
-          Divide RangeMax between RangeMin.</div>
-      </div>
-    </div>
-
-
-    <div class="range-input-div">
-
-      <mat-form-field class="input-range-last-input">
-        <input type="number" [pattern]="unamePattern" matInput formControlName="accuracyInput" [(ngModel)]="newInput.accuracy" placeholder="Accuracy (eg: 0.5)">
-      </mat-form-field>
-
-      <div *ngIf="formGr.accuracyInput.errors && formGr.accuracyInput.touched" class="div-errors">
-        <div *ngIf="formGr.accuracyInput.errors.required" class="div-manage-errors">Accuracy is required.</div>
-        <div *ngIf="!formGr.accuracyInput.errors.required && formGr.accuracyInput.invalid" class="div-manage-errors">
-          Divide RangeMax between RangeMin.</div>
+      <div *ngFor="let input of inputs">
+        <pre> {{input |json}}</pre>
       </div>
 
-    </div>
-  </div>
 
 
-  <div class="button-div">
-    <button mat-raised-button color="primary" type="submit" [disabled]="!myForm.form.valid" (click)="addEnumToList(false)" class="save-button">SAVE</button>
-    <button mat-raised-button (click)="manageFormCancel()">CANCEL</button>
-  </div>
 
-</form>
+    </form>
+
+  </mat-card-content>
+
+</mat-card>

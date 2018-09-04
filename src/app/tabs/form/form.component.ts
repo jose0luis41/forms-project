@@ -164,15 +164,16 @@ export class FormComponent implements OnInit {
         this.newJson = JSON.parse(json);
         this.newJson['category'] = this.currentCategory;
         this.inputs.push(this.newJson);
-        this.showNewInputForm = false;
-        this.createForm(this.inputs)
+        //this.showNewInputForm = true;
+        
+        //this.createForm(this.inputs)
       }
 
     });
 
 
 
-    this.createForm(this.inputs);
+   // this.createForm(this.inputs);
   }
 
 
