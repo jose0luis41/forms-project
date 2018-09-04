@@ -126,7 +126,7 @@ export class NewInputComponent implements OnInit {
       formatInput: [input.format],
       categoryInput: [input.category],
       showDetailsInput: [input.showDetails],
-      rangeMinInput: [input.rangeMin],
+      rangeMinInput: [input.rangeMin,],
       rangeMaxInput: [input.rangeMax],
       unitMeasureInput: [input.unitMeasure],
       precisionInput: [input.precision],
@@ -148,32 +148,34 @@ export class NewInputComponent implements OnInit {
     return arr;
   }
 
-  manageValidations(format) {
+  manageValidations(format, input) {
     if (format.name === 'NUMBER') {
       this.showEnum = false;
 
-      this.form.controls['rangeMinInput'].setValidators([Validators.required, this.greaterThan('rangeMaxInput')]);
-      this.form.controls['rangeMaxInput'].setValidators([Validators.required, , this.lessThan('rangeMinInput')]);
-      this.form.controls['precisionInput'].setValidators([Validators.required, this.divideRanges('precisionInput')]);
-      this.form.controls['accuracyInput'].setValidators([this.divideRanges('accuracyInput')]);
+      input.get('rangeMinInput').setValidators([Validators.required, this.greaterThan('rangeMaxInput')]);
+      input.get('rangeMinInput').updateValueAndValidity();
 
-      this.form.controls['rangeMinInput'].updateValueAndValidity();
-      this.form.controls['rangeMaxInput'].updateValueAndValidity();
-      this.form.controls['precisionInput'].updateValueAndValidity();
-      this.form.controls['accuracyInput'].updateValueAndValidity();
+      input.get('rangeMaxInput').setValidators([Validators.required, this.lessThan('rangeMinInput')]);
+      input.get('rangeMaxInput').updateValueAndValidity();
 
+      input.get('precisionInput').setValidators([Validators.required, this.divideRanges('precisionInput')]);
+      input.get('precisionInput').updateValueAndValidity();
 
+      input.get('accuracyInput').setValidators([Validators.required, this.divideRanges('accuracyInput')]);
+      input.get('accuracyInput').updateValueAndValidity();
 
     } else {
-      this.form.controls['rangeMinInput'].setValidators([]);
-      this.form.controls['rangeMaxInput'].setValidators([]);
-      this.form.controls['precisionInput'].setValidators([]);
-      this.form.controls['accuracyInput'].setValidators([]);
+      input.get('rangeMinInput').setValidators([]);
+      input.get('rangeMinInput').updateValueAndValidity();
 
-      this.form.controls['rangeMinInput'].updateValueAndValidity();
-      this.form.controls['rangeMaxInput'].updateValueAndValidity();
-      this.form.controls['precisionInput'].updateValueAndValidity();
-      this.form.controls['accuracyInput'].updateValueAndValidity();
+      input.get('rangeMaxInput').setValidators([]);
+      input.get('rangeMaxInput').updateValueAndValidity();
+
+      input.get('precisionInput').setValidators([]);
+      input.get('precisionInput').updateValueAndValidity();
+
+      input.get('accuracyInput').setValidators([]);
+      input.get('accuracyInput').updateValueAndValidity();
 
     }
 
@@ -269,13 +271,15 @@ export class NewInputComponent implements OnInit {
 
   checkEqualsNames(control: AbstractControl) {
     var isEqual = null;
-
+    //var array = <FormArray>this.form.controls['inputs'];
+    //console.log(array);
     for (let index = 0; index < this.listObservableInputs.length && isEqual === null; index++) {
       const currentElement = this.listObservableInputs[index];
       if (control.value === currentElement.name) {
         isEqual = true;
         return { 'isEqual': true };
       }
+      
     }
     return isEqual;
   }
@@ -295,7 +299,7 @@ export class NewInputComponent implements OnInit {
     this.showNewInputForm = true;
     this.newInput['category'] = this.currentCategory;
     this.inputs.push(this.newInput);
-
+    this.listObservableInputs = this.inputs;
     this.manageAddNewInput(this.newInput);
 
 
