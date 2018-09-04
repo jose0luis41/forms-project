@@ -73,7 +73,7 @@
 
             </div>
 
-            <button mat-mini-fab class="background-add" name="enumButton" [disabled]="!dataEnum" (click)="addEnumToList(true)">
+            <button mat-mini-fab class="background-add" name="enumButton" [disabled]="!input.get('enumInput').value" (click)="addEnumToList(input.get('enumInput').value, i)">
               <mat-icon md-12 aria-label="Details" class="icon-plus">
                 add_circle
               </mat-icon>
@@ -87,7 +87,7 @@
               <p>
                 {{enum.element}}
               </p>
-              <i class="material-icons" (click)="removeEnumValues(enum)">
+              <i class="material-icons" (click)="removeEnumValues(enum, i)">
                 clear
               </i>
             </div>
@@ -95,7 +95,7 @@
           </div> 
 
 
-          <div *ngIf="newInput.format && newInput.format === 'NUMBER' && newInput.dataType && newInput.dataType === 'STRING'">
+          <div *ngIf="input.get('formatInput') && input.get('formatInput').value === 'NUMBER' && input.get('dataTypeInput') && input.get('dataTypeInput').value === 'STRING'">
             <div class="range-input-div">
               <mat-form-field class="input-range input-margin">
                 <input type="number" matInput formControlName="rangeMinInput" [(ngModel)]="input.get('rangeMinInput').value" placeholder="Range Min">
@@ -122,7 +122,7 @@
 
           </div>
 
-          <div *ngIf="newInput.format && newInput.format === 'NUMBER' && newInput.dataType && newInput.dataType === 'STRING'">
+          <div *ngIf="input.get('formatInput') && input.get('formatInput').value === 'NUMBER' && input.get('dataTypeInput') && input.get('dataTypeInput').value === 'STRING'">
             <mat-form-field class="input-range-last-input input-margin-last-input">
               <input type="text" matInput formControlName="unitMeasureInput" [(ngModel)]="input.get('unitMeasureInput').value" placeholder="UoM (eg: mm)">
             </mat-form-field>
@@ -176,7 +176,7 @@
       <mat-divider></mat-divider>
 
       <div *ngFor="let input of inputs">
-        <pre> {{input |json}}</pre>
+        <pre> {{form.value.inputs |json}}</pre>
       </div>
 
 

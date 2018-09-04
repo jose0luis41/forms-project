@@ -96,26 +96,13 @@ export class NewInputComponent implements OnInit {
     });
 
     this.createForm(this.inputs);
-   /* this.form = this.fb.group({
-      'nameInput': ['', [Validators.required, this.checkEqualsNames.bind(this)]],
-      'descriptionInput': ['',],
-      'deviceInput': ['',],
-      'defaultValueInput': ['',],
-      'dataTypeInput': ['',],
-      'formatInput': ['',],
-      'enmuerationInput': ['',],
-      'rangeMinInput': ['',],
-      'rangeMaxInput': ['',],
-      'unitMeasureInput': ['',],
-      'precisionInput': ['',],
-      'accuracyInput': ['',],
 
-    });*/
 
   }
 
   public createForm(inputs) {
     var array = [];
+
     for (var index = 0; index < inputs.length; index++) {
       if (inputs[index].category === this.currentCategory) {
         array.push(this.buildInput(inputs[index]));
@@ -214,25 +201,20 @@ export class NewInputComponent implements OnInit {
     } */
   }
 
-  removeEnumValues(newEmun) {
-    var index = this.newInput.enumerations.indexOf(newEmun);
-    this.newInput.enumerations.splice(index, 1);
+  removeEnumValues(newEmun, position) {
+    var index = this.form.controls.inputs.value[position].enumerations.indexOf(newEmun);
+    this.form.controls.inputs.value[position].enumerations.splice(index, 1);
 
   }
 
-  addEnumToList(value) {
-    if (value) {
-      this.isPressAddNum = true;
-      this.newInput.enumerations.push(this.dataEnum);
-      this.manageData.changeSendEnum(this.dataEnum);
-      this.snackBar.open(this.dataEnum + ' has been added successfully', 'OK', {
+  addEnumToList(value, index) {
+      var json = {'element': value};
+      this.form.controls.inputs.value[index].enumerations.push(json);
+      this.snackBar.open(value + ' has been added successfully', 'OK', {
         duration: 6000,
       });
-      this.dataEnum = null;
-
-    } else {
-      this.isPressAddNum = false;
-    }
+      
+      this.form.controls.inputs.value[index].enumInput = '';
 
   }
 
@@ -315,9 +297,7 @@ export class NewInputComponent implements OnInit {
     this.inputs.push(this.newInput);
 
     this.manageAddNewInput(this.newInput);
-    //console.log(this.inputs);
-    //this.createForm(this.inputs);
-    //this.manageData.changeInputJson(JSON.stringify(this.newInput));
+
 
   }
 
