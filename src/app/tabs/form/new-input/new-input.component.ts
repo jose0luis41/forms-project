@@ -75,9 +75,9 @@ export class NewInputComponent implements OnInit {
   dataEnum;
   showEnum = true;
   listObservableInputs;
-  unamePattern = "^[a-z0-9_-]{8,15}$";
   showNewInputForm = false;
   currentCategory: string;
+  numberOfInputs = 0;
 
   public dataTypes = [{ 'name': 'STRING' }, { 'name': 'OBJECT' }];
   public formats = [{ 'name': 'NONE' }, { 'name': 'NUMBER' }, { 'name': 'BOOLEAN' }, { 'name': 'DATE-TIME' }, { 'name': 'CDATA' }, { 'name': 'URL' }];
@@ -95,7 +95,7 @@ export class NewInputComponent implements OnInit {
 
       if(this.form){
         console.log(this.form.value.inputs)
-        this.createForm(this.form.value.inputs);  
+        //this.createForm(this.form.value.inputs);  
       }
         
 
@@ -156,6 +156,8 @@ export class NewInputComponent implements OnInit {
       enumInput: [input.enumInput],
       enumerations: this.addEnumToArray(input)
     })
+
+
   }
 
 
@@ -303,7 +305,7 @@ export class NewInputComponent implements OnInit {
 
     for (let index = 0; index < this.form.value.inputs.length; index++) {
       var currentInputForm = this.form.value.inputs[index];
-      if (currentInputForm.name === input.value.name) {
+      if (currentInputForm.nameInput === input.value.nameInput) {
         control.removeAt(index);
       }
 
@@ -315,10 +317,10 @@ export class NewInputComponent implements OnInit {
     var isEqual = null;
     //var array = <FormArray>this.form.controls['inputs'];
     //console.log(array);
-    console.log(this.form);
     if(this.form){
       for (let index = 0; index < this.form.value.inputs.length && isEqual === null; index++) {
         const currentElement = this.form.value.inputs[index];
+        console.log(control.value);
         if (control.value === currentElement.nameInput) {
           isEqual = true;
           return { 'isEqual': true };
@@ -346,7 +348,8 @@ export class NewInputComponent implements OnInit {
     this.newInput['categoryInput'] = this.currentCategory;
     this.newInput['showDetailsInput'] = true;
 
-  
+    this.numberOfInputs++;
+
 
     this.inputs.push(this.newInput);
     this.listObservableInputs = this.inputs;

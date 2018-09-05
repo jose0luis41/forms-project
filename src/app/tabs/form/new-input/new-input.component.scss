@@ -34,6 +34,7 @@ mat-card{
 
 .a-icon-left{
     margin: 18px auto 13px -2px;
+    padding-top: 12px;
     /* margin-right: auto;
     margin-left: -2px;
     margin-bottom: 10px; */
@@ -103,7 +104,7 @@ mat-card{
 
 
 .button-div{
-    padding-top: 18px;
+    padding: 14px 0 14px 0;
     justify-content: flex-end;
     display: flex;
 }
@@ -153,8 +154,10 @@ mat-icon{
 
 
 .a-icon-left-remove{
+    margin: 0 auto 5px -2px;
+  /*   margin-bottom: 5px;
     margin-right: auto;
-    margin-left: -2px;
+    margin-left: -2px; */
     //justify-content: flex-end;
     //display: table; 
     justify-content: flex-start;
