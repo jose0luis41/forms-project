@@ -2,6 +2,7 @@ import { Component, OnInit, NgModule } from '@angular/core';
 import { MatFormFieldModule, MatInputModule, MatSelectModule, MatSelect, MatFormField, MatInput, MatSnackBarModule, MatSnackBar } from '@angular/material';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators, AbstractControl, ValidatorFn, FormArray } from '@angular/forms';
 import { ManageDataService } from '../../../services/manage-data.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-new-input',
@@ -34,7 +35,7 @@ export class NewInputComponent implements OnInit {
   form: FormGroup;
   submitted = false;
   inputs = [
-    {
+    /* {
       'name': 'Device Info',
       'description': 'Device Info Testing',
       'deviceResource': 'Default Value',
@@ -50,23 +51,23 @@ export class NewInputComponent implements OnInit {
       'accuracy': 2,
       'enum': null,
       'enumerations': ['TEST1', 'TEST2']
-    }];
+    } */];
 
   newInput = {
-    'name': null,
-    'description': null,
-    'defaultValue': null,
-    'dataType': 'STRING',
-    'format': 'NONE',
-    'deviceResource': null,
-    'showDetails': false,
-    'rangeMin': null,
-    'rangeMax': null,
-    'unitMeasure': null,
-    'precision': null,
-    'accuracy': null,
-    'category': null,
-    'enum': null,
+    'nameInput': null,
+    'descriptionInput': null,
+    'defaultValueInput': null,
+    'dataTypeInput': 'STRING',
+    'formatInput': 'NONE',
+    'deviceInput': null,
+    'showDetailsInput': false,
+    'rangeMinInput': null,
+    'rangeMaxInput': null,
+    'unitMeasureInput': null,
+    'precisionInput': null,
+    'accuracyInput': null,
+    'categoryInput': null,
+    'enumInput': null,
     'enumerations': []
   };
 
@@ -91,7 +92,12 @@ export class NewInputComponent implements OnInit {
 
     this.manageData.currentCategory.subscribe(category => {
       this.currentCategory = category;
-      this.createForm(this.inputs);
+
+      if(this.form){
+        console.log(this.form.value.inputs)
+        this.createForm(this.form.value.inputs);  
+      }
+        
 
     });
 
@@ -104,34 +110,50 @@ export class NewInputComponent implements OnInit {
     var array = [];
 
     for (var index = 0; index < inputs.length; index++) {
-      if (inputs[index].category === this.currentCategory) {
+      /* if (inputs[index].category === this.currentCategory) { */
         array.push(this.buildInput(inputs[index]));
-      }
+     /*  } */
     }
 
     this.form = this.fb.group({
       inputs: this.fb.array(array)
-    })
+    });
+
+  /*   for (let index = 0; index < this.inputs.length; index++) {
+      this.inputs[index].name = this.fb.array(array).value[index].nameInput;
+      this.inputs[index].description = this.fb.array(array).value[index].descriptionInput;
+      this.inputs[index].dataType = this.fb.array(array).value[index].dataTypeInput;
+      this.inputs[index].defaultValue = this.fb.array(array).value[index].defaultValueInput;
+      this.inputs[index].deviceResource = this.fb.array(array).value[index].deviceInput;
+      this.inputs[index].format = this.fb.array(array).value[index].formatInput;
+      this.inputs[index].accuracy = this.fb.array(array).value[index].accuracyInput;
+      this.inputs[index].unitMeasure = this.fb.array(array).value[index].unitMeasureInput;
+      this.inputs[index].precision = this.fb.array(array).value[index].precisionInput;
+      this.inputs[index].rangeMax = this.fb.array(array).value[index].rangeMaxInput;
+      this.inputs[index].rangeMin = this.fb.array(array).value[index].rangeMinInput;
+      this.inputs[index].enumerations = this.fb.array(array).value[index].enumerations;
+      
+    } */
+
   }
 
   buildInput(input): FormGroup {
-    var enumeraJson = input.enumerations;
 
     return this.fb.group({
-      nameInput: [input.name, [Validators.required, this.checkEqualsNames.bind(this)]],
-      descriptionInput: [input.description],
-      deviceInput: [input.deviceResource],
-      defaultValueInput: [input.defaultValue],
-      dataTypeInput: [input.dataType],
-      formatInput: [input.format],
-      categoryInput: [input.category],
-      showDetailsInput: [input.showDetails],
-      rangeMinInput: [input.rangeMin,],
-      rangeMaxInput: [input.rangeMax],
-      unitMeasureInput: [input.unitMeasure],
-      precisionInput: [input.precision],
-      accuracyInput: [input.accuracy],
-      enumInput: [input.enum],
+      nameInput: [input.nameInput, [Validators.required, this.checkEqualsNames.bind(this)]],
+      descriptionInput: [input.descriptionInput],
+      deviceInput: [input.deviceInput],
+      defaultValueInput: [input.defaultValueInput],
+      dataTypeInput: [input.dataTypeInput],
+      formatInput: [input.formatInput],
+      categoryInput: [input.categoryInput],
+      showDetailsInput: [input.showDetailsInput],
+      rangeMinInput: [input.rangeMinInput,],
+      rangeMaxInput: [input.rangeMaxInput],
+      unitMeasureInput: [input.unitMeasureInput],
+      precisionInput: [input.precisionInput],
+      accuracyInput: [input.accuracyInput],
+      enumInput: [input.enumInput],
       enumerations: this.addEnumToArray(input)
     })
   }
@@ -196,11 +218,11 @@ export class NewInputComponent implements OnInit {
   onSubmit() {
 
     this.manageData.changeInputJson(JSON.stringify(this.newInput));
-  /*   if (this.form.valid && !this.isPressAddNum) {
-      this.manageData.changeInputJson(JSON.stringify(this.newInput));
-    } else {
-      console.log('No valid');
-    } */
+    /*   if (this.form.valid && !this.isPressAddNum) {
+        this.manageData.changeInputJson(JSON.stringify(this.newInput));
+      } else {
+        console.log('No valid');
+      } */
   }
 
   removeEnumValues(newEmun, position) {
@@ -209,14 +231,15 @@ export class NewInputComponent implements OnInit {
 
   }
 
-  addEnumToList(value, index) {
-      var json = {'element': value};
-      this.form.controls.inputs.value[index].enumerations.push(json);
-      this.snackBar.open(value + ' has been added successfully', 'OK', {
-        duration: 6000,
-      });
-      
-      this.form.controls.inputs.value[index].enumInput = '';
+  addEnumToList(input, index) {
+    var json = { 'element': input.get('enumInput').value };
+
+    input.get('enumerations').value.push(json)
+
+    this.snackBar.open(input.get('enumInput').value + ' has been added successfully', 'OK', {
+      duration: 6000,
+    });
+
 
   }
 
@@ -263,25 +286,47 @@ export class NewInputComponent implements OnInit {
       var fieldToCompareRangeMax = group.get('rangeMaxInput');
       var precisionInput = group.get(value);
       const isOkDivison = (Number(fieldToCompareRangeMax.value) - Number(fieldToCompareRangemin.value)) % Number(precisionInput.value) !== 0;
-      console.log(isOkDivison);
       return isOkDivison ? { 'isOk': { value: control.value } } : null;
     }
   }
 
+  showDetails(input) {
+    if (input.controls.showDetailsInput.value === true) {
+      input.controls.showDetailsInput.value = false;
+    } else {
+      input.controls.showDetailsInput.value = true;
+    }
+  }
+
+  removeInput(input) {
+    var control = <FormArray>this.form.controls['inputs'];
+
+    for (let index = 0; index < this.form.value.inputs.length; index++) {
+      var currentInputForm = this.form.value.inputs[index];
+      if (currentInputForm.name === input.value.name) {
+        control.removeAt(index);
+      }
+
+    }
+  }
 
 
   checkEqualsNames(control: AbstractControl) {
     var isEqual = null;
     //var array = <FormArray>this.form.controls['inputs'];
     //console.log(array);
-    for (let index = 0; index < this.listObservableInputs.length && isEqual === null; index++) {
-      const currentElement = this.listObservableInputs[index];
-      if (control.value === currentElement.name) {
-        isEqual = true;
-        return { 'isEqual': true };
+    console.log(this.form);
+    if(this.form){
+      for (let index = 0; index < this.form.value.inputs.length && isEqual === null; index++) {
+        const currentElement = this.form.value.inputs[index];
+        if (control.value === currentElement.nameInput) {
+          isEqual = true;
+          return { 'isEqual': true };
+        }
+  
       }
-      
     }
+  
     return isEqual;
   }
 
@@ -296,18 +341,24 @@ export class NewInputComponent implements OnInit {
 
   }
 
-  addNewInput(){
+  addNewInput(input) {
     this.showNewInputForm = true;
-    this.newInput['category'] = this.currentCategory;
+    this.newInput['categoryInput'] = this.currentCategory;
+    this.newInput['showDetailsInput'] = true;
+
+  
+
     this.inputs.push(this.newInput);
     this.listObservableInputs = this.inputs;
-    this.manageAddNewInput(this.newInput);
+    this.manageAddNewInput(this.newInput);  
 
 
   }
 
 
-
+  onSearchChange(searchValue: string, input) {
+  
+  }
 
 
 }

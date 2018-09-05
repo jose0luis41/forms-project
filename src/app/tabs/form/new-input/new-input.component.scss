@@ -33,7 +33,7 @@ mat-card{
 }
 
 .a-icon-left{
-    margin: 18px auto 17px -2px;
+    margin: 18px auto 13px -2px;
     /* margin-right: auto;
     margin-left: -2px;
     margin-bottom: 10px; */
@@ -136,6 +136,32 @@ p{
     margin: 0 0 0 0;
     @media screen and (max-width: 823px) {
         margin-right: 20px;
+    }
+}
+
+mat-icon{
+    cursor: pointer;
+    font-size: 19px;
+}
+
+.a-details{
+    margin-right: 0;
+    margin-left: auto;
+    justify-content: flex-end;
+    display: table;
+}
+
+
+.a-icon-left-remove{
+    margin-right: auto;
+    margin-left: -2px;
+    //justify-content: flex-end;
+    //display: table; 
+    justify-content: flex-start;
+    display: flex;
+
+    .mat-icon{
+        color: #4650B2;
     }
 }
 
