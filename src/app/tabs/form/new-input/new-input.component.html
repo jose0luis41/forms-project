@@ -16,7 +16,7 @@
 
           <div class="name-div">
             <mat-form-field class="input-left">
-              <input type="text" matInput formControlName="nameInput" [(ngModel)]="input.get('nameInput').value" (input)="onSearchChange($event.target.value, input)"
+              <input type="text" matInput formControlName="nameInput" [(ngModel)]="input.get('nameInput').value"
                 placeholder="Name">
             </mat-form-field>
 
@@ -174,7 +174,11 @@
       </div>
 
 
-   
+      <a class="a-icon-left" *ngIf="isLast">
+        <mat-icon (click)="addNewInput(input)" md-12 aria-label="Details">add_circle
+        </mat-icon>
+        <p>Add new attribute</p>
+    </a>
 
       <mat-divider></mat-divider>
 
@@ -195,6 +199,7 @@
       <mat-divider *ngIf="form.value.inputs.length >0"></mat-divider>
 
 
+      <h2 *ngIf="form.value.inputs.length >0">Json format:</h2>
       <div *ngFor="let input of form.value.inputs">
         <pre> {{input |json}}</pre>
       </div>

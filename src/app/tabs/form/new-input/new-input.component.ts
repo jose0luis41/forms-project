@@ -1,4 +1,4 @@
-import { Component, OnInit, NgModule } from '@angular/core';
+import { Component, OnInit, NgModule, ChangeDetectorRef } from '@angular/core';
 import { MatFormFieldModule, MatInputModule, MatSelectModule, MatSelect, MatFormField, MatInput, MatSnackBarModule, MatSnackBar } from '@angular/material';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators, AbstractControl, ValidatorFn, FormArray } from '@angular/forms';
 import { ManageDataService } from '../../../services/manage-data.service';
@@ -77,24 +77,27 @@ export class NewInputComponent implements OnInit {
   listObservableInputs;
   showNewInputForm = false;
   currentCategory: string;
-  numberOfInputs = 0;
 
   public dataTypes = [{ 'name': 'STRING' }, { 'name': 'OBJECT' }];
   public formats = [{ 'name': 'NONE' }, { 'name': 'NUMBER' }, { 'name': 'BOOLEAN' }, { 'name': 'DATE-TIME' }, { 'name': 'CDATA' }, { 'name': 'URL' }];
 
   public listEnum = [{ 'name': 'Enum1' }, { 'name': 'Enum2' }];
 
-  constructor(private fb: FormBuilder, private manageData: ManageDataService, public snackBar: MatSnackBar) { }
+  constructor(private fb: FormBuilder, private manageData: ManageDataService, public snackBar: MatSnackBar, private cdRef: ChangeDetectorRef) { }
 
   ngOnInit() {
 
-    this.manageData.currentListInputs.subscribe(list => this.listObservableInputs = list);
+   // this.manageData.currentListInputs.subscribe(list => this.listObservableInputs = list);
 
     this.manageData.currentCategory.subscribe(category => {
       this.currentCategory = category;
 
       if(this.form){
         console.log(this.form.value.inputs)
+      
+        for (let index = 0; index < this.form.controls.inputs.value.length; index++) {
+            console.log('iuhu');          
+        }
         //this.createForm(this.form.value.inputs);  
       }
         
@@ -118,22 +121,6 @@ export class NewInputComponent implements OnInit {
     this.form = this.fb.group({
       inputs: this.fb.array(array)
     });
-
-  /*   for (let index = 0; index < this.inputs.length; index++) {
-      this.inputs[index].name = this.fb.array(array).value[index].nameInput;
-      this.inputs[index].description = this.fb.array(array).value[index].descriptionInput;
-      this.inputs[index].dataType = this.fb.array(array).value[index].dataTypeInput;
-      this.inputs[index].defaultValue = this.fb.array(array).value[index].defaultValueInput;
-      this.inputs[index].deviceResource = this.fb.array(array).value[index].deviceInput;
-      this.inputs[index].format = this.fb.array(array).value[index].formatInput;
-      this.inputs[index].accuracy = this.fb.array(array).value[index].accuracyInput;
-      this.inputs[index].unitMeasure = this.fb.array(array).value[index].unitMeasureInput;
-      this.inputs[index].precision = this.fb.array(array).value[index].precisionInput;
-      this.inputs[index].rangeMax = this.fb.array(array).value[index].rangeMaxInput;
-      this.inputs[index].rangeMin = this.fb.array(array).value[index].rangeMinInput;
-      this.inputs[index].enumerations = this.fb.array(array).value[index].enumerations;
-      
-    } */
 
   }
 
@@ -219,7 +206,8 @@ export class NewInputComponent implements OnInit {
 
   onSubmit() {
 
-    this.manageData.changeInputJson(JSON.stringify(this.newInput));
+    console.log('on sub');
+       this.manageData.changeInputJson(JSON.stringify(this.newInput));
     /*   if (this.form.valid && !this.isPressAddNum) {
         this.manageData.changeInputJson(JSON.stringify(this.newInput));
       } else {
@@ -315,18 +303,29 @@ export class NewInputComponent implements OnInit {
 
   checkEqualsNames(control: AbstractControl) {
     var isEqual = null;
+    var numberRepetitation = 0;
     //var array = <FormArray>this.form.controls['inputs'];
     //console.log(array);
     if(this.form){
-      for (let index = 0; index < this.form.value.inputs.length && isEqual === null; index++) {
+
+      for (let index = 0; index < this.form.value.inputs.length; index++) {
         const currentElement = this.form.value.inputs[index];
-        console.log(control.value);
-        if (control.value === currentElement.nameInput) {
+
+        //console.log(currentElement.nameInput, control.value);
+
+        if (currentElement.nameInput != null && control.value === currentElement.nameInput) {
+
+          numberRepetitation++;
+
           isEqual = true;
+
           return { 'isEqual': true };
         }
+
   
       }
+
+      //console.log(this.form.value);
     }
   
     return isEqual;
@@ -340,28 +339,27 @@ export class NewInputComponent implements OnInit {
   manageAddNewInput(input) {
     var control = <FormArray>this.form.controls['inputs'];
     control.push(this.buildInput(input));
-
+    //console.log(this.form.controls['inputs'][0]);
+    //control.value[control.value.length - 1].get('nameInput').setValidators([this.checkEqualsNames.bind(this)]);
+    //control.value[control.value.length - 1].get('nameInput').updateValueAndValidity();
   }
 
+  ngAfterViewChecked() {
+    this.cdRef.detectChanges();
+    }
+
   addNewInput(input) {
+    //console.log(input);
     this.showNewInputForm = true;
     this.newInput['categoryInput'] = this.currentCategory;
     this.newInput['showDetailsInput'] = true;
 
-    this.numberOfInputs++;
-
 
     this.inputs.push(this.newInput);
-    this.listObservableInputs = this.inputs;
+    //this.listObservableInputs = this.inputs;
     this.manageAddNewInput(this.newInput);  
 
 
   }
-
-
-  onSearchChange(searchValue: string, input) {
-  
-  }
-
 
 }
