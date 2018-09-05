@@ -16,7 +16,7 @@
 
           <div class="name-div">
             <mat-form-field class="input-left">
-              <input type="text" matInput formControlName="nameInput" [(ngModel)]="input.get('nameInput').value"
+              <input type="text" matInput formControlName="nameInput" [(ngModel)]="input.get('nameInput').value" (input)="onSearchChange($event.target.value)"
                 placeholder="Name">
             </mat-form-field>
 
