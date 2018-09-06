@@ -301,7 +301,8 @@ export class NewInputComponent implements OnInit {
 
     for (let index = 0; index < this.form.value.inputs.length; index++) {
       var currentInputForm = this.form.value.inputs[index];
-      if (currentInputForm.nameInput === input.value.nameInput) {
+      console.log(currentInputForm, input.value);
+      if (currentInputForm.nameInput === input.value.nameInput && currentInputForm.categoryInput === input.value.categoryInput) {
         control.removeAt(index);
       }
 
@@ -318,11 +319,11 @@ export class NewInputComponent implements OnInit {
       if(this.numberInputs >0 && this.form.valid){
         return isEqual;
       }else{
-        for (let index = 0; index < this.form.value.inputs.length; index++) {
+        for (let index = 0; index < this.form.value.inputs.length && isEqual===null; index++) {
           const currentElement = this.form.value.inputs[index];
-          console.log(currentElement.nameInput);
+          console.log(currentElement.nameInput, control.value);
           if (currentElement.nameInput != null && control.value === currentElement.nameInput) {
-    
+            console.log('here');
             isEqual = true;
   
             return { 'isEqual': true };
