@@ -192,7 +192,7 @@ export class NewInputComponent implements OnInit {
 
       input.get('accuracyInput').setValidators([]);
       input.get('accuracyInput').updateValueAndValidity();
-
+      
     }
 
     if (
@@ -237,7 +237,12 @@ export class NewInputComponent implements OnInit {
   setValues(dataType, input) {
     if (dataType.name === 'OBJECT') {
       input.get('formatInput').value = null;
-      input.get('defaultValue').value = null;
+      input.get('defaultValueInput').value = null;
+      input.get('rangeMinInput').value = null;
+      input.get('rangeMaxInput').value = null;
+      input.get('precisionInput').value = null;
+      input.get('accuracyInput').value = null;
+      input.get('unitMeasureInput').value = null;
       this.showEnum = false;
 
     } else {
@@ -282,9 +287,12 @@ export class NewInputComponent implements OnInit {
 
   showDetails(input) {
     if (input.controls.showDetailsInput.value === true) {
-      input.controls.showDetailsInput.value = false;
+      //input.controls.showDetailsInput.value = false;
+      input.get('showDetailsInput').value = false;
     } else {
-      input.controls.showDetailsInput.value = true;
+     // input.controls.showDetailsInput.value = true;
+      input.get('showDetailsInput').value = true;
+
     }
   }
 
@@ -312,7 +320,7 @@ export class NewInputComponent implements OnInit {
       }else{
         for (let index = 0; index < this.form.value.inputs.length; index++) {
           const currentElement = this.form.value.inputs[index];
-  
+          console.log(currentElement.nameInput);
           if (currentElement.nameInput != null && control.value === currentElement.nameInput) {
     
             isEqual = true;
