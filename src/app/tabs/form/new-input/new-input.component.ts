@@ -303,22 +303,18 @@ export class NewInputComponent implements OnInit {
 
   checkEqualsNames(control: AbstractControl) {
     var isEqual = null;
-    var numberRepetitation = 0;
-    console.log(this.form.value.inputs);
     //var array = <FormArray>this.form.controls['inputs'];
     //console.log(array);
     if (this.form) {
 
-      if(this.numberInputs >0){
+      if(this.numberInputs >0 && this.form.valid){
         return isEqual;
       }else{
         for (let index = 0; index < this.form.value.inputs.length; index++) {
           const currentElement = this.form.value.inputs[index];
   
           if (currentElement.nameInput != null && control.value === currentElement.nameInput) {
-  
-            numberRepetitation++;
-  
+    
             isEqual = true;
   
             return { 'isEqual': true };
